@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  # Config Server - Standalone for testing
+  config-server:
+    build:
+      context: ./ServerConfig
+      dockerfile: Dockerfile
+    container_name: config-server-standalone
+    restart: unless-stopped
+    ports:
+      - "8889:8889"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    volumes:
+      - ./ServerConfig/config:/config
+    networks:
+      - microservices-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8889/actuator/health || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+
+networks:
+  microservices-network:
+    driver: bridge

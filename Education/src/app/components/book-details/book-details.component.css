@@ -1,0 +1,206 @@
+aside.context {
+  text-align: left;
+  text-transform: none;
+  padding-right: 20px;
+  color: #333;
+}
+aside.context a {
+  text-decoration: none;
+  color: #333;
+  padding: 3px 0;
+  border-bottom: 1px dashed;
+}
+aside.context a:hover {
+  border-bottom: 1px solid;
+}
+
+footer {
+  text-align: center;
+  width: 100%;
+}
+footer a {
+  text-decoration: none;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px dashed #333;
+  color: #333;
+  margin: 0 3px;
+}
+footer a:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+footer a .icons {
+  margin-top: 8px;
+  display: inline-block;
+  font-size: 14px;
+}
+
+.main-content {
+  display: grid;
+  grid-template-areas: "navigation pie-recipe pie-image" "context context pie-image";
+  grid-template-columns: min-content auto 35%;
+  grid-template-rows: auto min-content;
+  margin: auto;
+  margin-top: 100px;
+  min-height: 100vh;
+  max-height: calc(100vh - 4em);
+  background: #fff;
+  box-shadow: 0 15px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
+}
+
+.context__wrapper {
+  grid-area: context;
+  background: #f7f7f7;
+  color: #333;
+  padding: 15px 20px;
+  font: 400 12px/1.2 "Raleway", sans-serif;
+  display: grid;
+  align-items: center;
+  grid-template-columns: auto max-content;
+}
+
+
+.booking{
+  border-radius: 25px;
+  color:white;
+  background-color:#015804;
+  padding: 20px;
+}
+.pie-image {
+  grid-area: pie-image;
+ /* background: url("src/assets/images/screenshot(2).png") no-repeat left center/cover;  */
+}
+
+.pie-name {
+  font: 900 45px Raleway;
+  text-transform: uppercase;
+  margin: 20px 0 5px;
+  letter-spacing: 2px;
+  color: #285f30;
+  position: relative;
+}
+
+.pie-serving {
+  font: 400 16px Raleway;
+  color: #916953;
+  margin: 20px 0;
+  max-width: 300px;
+}
+.pie-serving svg {
+  width: 40px;
+}
+.pie-serving svg path {
+  fill: #916953;
+}
+.pie-serving p {
+  display: inline-block;
+  vertical-align: top;
+  margin: 12px 6px 6px;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #dbc7b1;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #d69762;
+}
+
+.pie-recipe {
+  grid-area: pie-recipe;
+  color: #999;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin: 5px;
+  max-height: 100%;
+  padding: 50px 60px;
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: 30px auto;
+  grid-template-rows: repeat(4, max-content);
+  line-height: 1.6;
+}
+.pie-recipe__title {
+  grid-column: span 2;
+}
+.pie-recipe__ingredients {
+  grid-column: span 2;
+  display: flex;
+  flex-wrap: wrap;
+}
+.pie-recipe__ingredients__item {
+  flex: 1;
+  padding: 0 40px 0 0;
+}
+.pie-recipe__ingredients__item h4 {
+  font: italic 20px/1.1 "Playfair Display", serif;
+  color: #2b6d04;
+  margin: 0 0 10px;
+  font-size: 25px;
+  margin-top: 30px;
+}
+.pie-recipe__ingredients__item ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.pie-recipe__ingredients__item ul li {
+  color:black;
+  padding: 5px 0;
+  font-size: larger;
+  
+}
+.pie-recipe__number {
+  font: italic 30px/1 "Playfair Display", serif;
+  color: #d69762;
+  place-self: center;
+  margin-top: -15px;
+}
+.pie-recipe__steps {
+  padding-right: 35px;
+}
+.pie-recipe__subtitle {
+  font: italic 30px/1 "Playfair Display", serif;
+  color: #916953;
+  margin: 45px 0 10px;
+  grid-column: span 2;
+}
+.pie-recipe__tips {
+  grid-column: span 2;
+  margin-top: 65px;
+  position: relative;
+  border: 2px solid #916953;
+  box-shadow: inset 0 0 0 2px #fff, inset 0 0 0 4px #916953;
+  text-align: center;
+  padding: 35px;
+}
+.pie-recipe__tips svg {
+  display: inline-block;
+  padding: 10px;
+  position: absolute;
+  margin: auto;
+  left: 0;
+  right: 0;
+  top: -40px;
+  width: auto;
+  background: #fff;
+  width: 60px;
+  fill: #916953;
+}
+.pie-recipe__tips h4 {
+  font: 900 24px Raleway;
+  text-transform: uppercase;
+  margin: 10px 0 15px;
+  color: #543b2e;
+}

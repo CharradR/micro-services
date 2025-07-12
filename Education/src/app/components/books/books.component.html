@@ -1,0 +1,15 @@
+
+
+<main class="page-content" >
+  <div class="card" *ngFor="let book of books" [style.backgroundImage]="'assets/images/' + book.id + '.png'" 
+>
+    <div class="content"  >
+      <h2 class="title">{{ book.title }}</h2>
+      <p class="copy" >{{ book.author }} - {{ book.category }}</p>
+      <span class="copy"  *ngIf="book.available; else notAvailable">Available</span>
+      <ng-template #notAvailable><span>Not Available</span></ng-template>
+      <button class="btn" (click)="viewBook(book.id)">View Book</button>
+    </div>
+  </div>
+ 
+</main>

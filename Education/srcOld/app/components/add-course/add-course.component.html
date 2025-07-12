@@ -1,0 +1,49 @@
+		<!-- Add-Course -->
+
+		<div class="contact_info_container">
+			<div class="container">
+				<div class="row">
+					<!-- TDF -->
+					<!-- Add-Course Form -->
+					<div class="col-lg-8 mx-auto">
+						<div class="contact_form">
+                            
+							<div class="contact_info_title">Add Course Form</div>
+							<form #addCourseForm="ngForm" class="comment_form " (ngSubmit)="addCourse()">
+                                <link rel="stylesheet" type="text/css" href="assets/styles/contact.css">
+								<div>
+									<div class="form_title">Course Title</div>
+									<input type="text" class="comment_input " [(ngModel)]="course.title" [ngModelOptions]="{standalone:true}" required="required">
+								</div>
+                                <div>
+									<div class="form_title">Price</div>
+									<input type="number" class="comment_input " [(ngModel)]="course.price" [ngModelOptions]="{standalone:true}" required="required">
+								</div>
+                                <div>
+									<div class="form_title">Teacher</div>
+									<input type="text" class="comment_input" [(ngModel)]="course.teacher" [ngModelOptions]="{standalone:true}" required="required">
+								</div>
+								<div>
+									<div class="form_title">Number Of Places</div>
+									<input type="text" class="comment_input" [(ngModel)]="course.nbrPlaces" [ngModelOptions]="{standalone:true}" required="required">
+								</div>
+								<div>
+									<div class="form_title">Teacher</div>
+									<input type="text" class="comment_input" [(ngModel)]="course.teacherId" [ngModelOptions]="{standalone:true}" required="required">
+								</div>
+								<div>
+									<div class="form_title">Description</div>
+									<textarea class="comment_input comment_textarea" [(ngModel)]="course.description" [ngModelOptions]="{standalone:true}" required="required"></textarea>
+								</div>
+
+								<div>
+									<button type="submit" class="comment_button trans_200">add Course</button>
+								</div>
+							</form>
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+		</div>

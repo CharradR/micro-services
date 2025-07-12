@@ -1,0 +1,52 @@
+		<!-- Login -->
+		<div class="contact_info_container">
+			<div class="container">
+				<div class="row">
+					<!-- Reactive Form -->
+					<!-- Login Form -->
+					<div class="col-lg-8 mx-auto">
+						<div class="contact_form">
+                            
+							<div class="contact_info_title">Login Form</div>
+							<form [formGroup]="loginForm">
+                                <link rel="stylesheet" type="text/css" href="assets/styles/contact.css">
+                                <div>
+									<div class="form_title">Email</div>
+									<input type="text" class="comment_input" formControlName="email" required="required">
+								</div>
+								<div *ngIf="loginForm.controls['email'].invalid 
+								&& (loginForm.controls['email'].touched || loginForm.controls['email'].dirty)">
+									<div *ngIf="loginForm.controls['email'].errors.required" class="red">
+									  Email is required
+									</div>
+									<div *ngIf="loginForm.controls['email'].errors.email" class="red">
+									  Adress mail invalid
+									</div>                
+								</div>        
+                                <div>
+									<div class="form_title">Password</div>
+									<input type="password" class="comment_input" formControlName="password" class="comment_input " required="required">
+								</div>
+								<div *ngIf="loginForm.controls['password'].invalid 
+								&& (loginForm.controls['password'].touched || loginForm.controls['password'].dirty)">
+									<div *ngIf="loginForm.controls['password'].errors.required" class="red">
+									  Password is required
+									</div>
+									<div *ngIf="loginForm.controls['password'].errors.minlength" class="red">
+									  Min 6 chars
+									</div>        
+									<div *ngIf="loginForm.controls['password'].errors.maxlength" class="red">
+									  Max 12 chars
+									</div>                        
+								</div>
+								<div>
+									<button type="submit"  class="comment_button trans_200" value="Submit" (click)="signup()">signup now</button>
+								</div>
+							</form>
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+		</div>

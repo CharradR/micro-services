@@ -1,0 +1,3 @@
+@echo off
+echo Building and starting all microservices...
+docker-compose build --no-cache && docker-compose up -d

@@ -1,0 +1,47 @@
+# Docker Compose Override for Development
+# Use: docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+
+version: '3.8'
+
+services:
+  # Config Server - Mount configuration files for development
+  config-server:
+    volumes:
+      - ./ServerConfig/src/main/resources:/app/config
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - LOGGING_LEVEL_ROOT=DEBUG
+
+  # Eureka Server - Enable debug logging
+  eureka-server:
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - LOGGING_LEVEL_ROOT=DEBUG
+      - EUREKA_INSTANCE_PREFER_IP_ADDRESS=true
+
+  # Library Service - Enable debug mode and hot reload
+  library-service:
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - LOGGING_LEVEL_ROOT=DEBUG
+      - SPRING_DEVTOOLS_RESTART_ENABLED=true
+    volumes:
+      - ./LibraryService/src:/app/src
+
+  # Gateway - Enable debug mode
+  gateway:
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - LOGGING_LEVEL_ROOT=DEBUG
+      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_CLOUD_GATEWAY=TRACE
+
+  # Angular Frontend - Development mode with live reload
+  education-frontend:
+    build:
+      target: build-stage
+    command: npm start
+    volumes:
+      - ./Education/src:/app/src
+      - ./Education/angular.json:/app/angular.json
+    environment:
+      - NODE_ENV=development

@@ -1,0 +1,76 @@
+
+
+		<!-- SignUp Info -->
+
+		<div class="contact_info_container">
+			<div class="container">
+				<div class="row">
+                    <!-- Reactive Form -->
+					<!-- SignUp Form -->
+					<div class="col-lg-8 mx-auto">
+						<div class="contact_form">
+                            
+							<div class="contact_info_title">Sign Up Form</div>
+							<form [formGroup]="signupForm" >
+                                <link rel="stylesheet" type="text/css" href="assets/styles/contact.css">
+								<div>
+									<div class="form_title">First Name</div>
+									<input type="text" class="comment_input "  formControlName="firstName" required="required">
+								</div>
+								<div *ngIf="signupForm.controls['firstName'].invalid 
+								&& (signupForm.controls['firstName'].touched || signupForm.controls['firstName'].dirty)">
+									<div *ngIf="signupForm.controls['firstName'].errors.required" class="red">
+									  First name is required
+									</div>
+									<div *ngIf="signupForm.controls['firstName'].errors.minlength" class="red">
+									  First name must have at least 3 chars
+									</div>                
+								</div>
+                                <div>
+									<div class="form_title">Last Name</div>
+									<input type="text" class="comment_input " required="required">
+								</div>
+                                <div>
+									<div class="form_title">Email</div>
+									<input type="text" class="comment_input" formControlName="email" required="required">
+								</div>
+                                <div *ngIf="signupForm.controls['email'].invalid 
+                                && (signupForm.controls['email'].touched || signupForm.controls['email'].dirty)">
+                                    <div *ngIf="signupForm.controls['email'].errors.required" class="red">
+                                      Email is required
+                                    </div>
+                                    <div *ngIf="signupForm.controls['email'].errors.email" class="red">
+                                      Adress mail invalid
+                                    </div>                
+                                </div> 
+                                <div>
+									<div class="form_title">Password</div>
+									<input type="password" class="comment_input " formControlName="password" required="required">
+								</div>
+                                <div *ngIf="signupForm.controls['password'].invalid 
+                                && (signupForm.controls['password'].touched || signupForm.controls['password'].dirty)">
+                                    <div *ngIf="signupForm.controls['password'].errors.required" class="red">
+                                      Password is required
+                                    </div>
+                                    <div *ngIf="signupForm.controls['password'].errors.minlength" class="red">
+                                      Min 6 chars
+                                    </div>        
+                                    <div *ngIf="signupForm.controls['password'].errors.maxlength" class="red">
+                                      Max 12 chars
+                                    </div>                        
+                                </div>    
+                                <div>
+									<div class="form_title">Confirm Password</div>
+									<input type="password" class="comment_input " formControlName="confirmPassword" required="required">
+								</div>
+								<div>
+									<button type="submit" class="comment_button trans_200">signup now</button>
+								</div>
+							</form>
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+		</div>

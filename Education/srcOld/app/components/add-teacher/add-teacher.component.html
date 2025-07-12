@@ -1,0 +1,41 @@
+		<!-- Add-Teacher -->
+
+		<div class="contact_info_container">
+			<div class="container">
+				<div class="row">
+					<!-- TDF -->
+					<!-- Add-Teacher Form -->
+					<div class="col-lg-8 mx-auto">
+						<div class="contact_form">
+                            
+							<div class="contact_info_title">Add Teacher Form</div>
+							<form #addTeacherForm="ngForm" class="comment_form " (ngSubmit)="addTeacher()">
+                                <link rel="stylesheet" type="text/css" href="assets/styles/contact.css">
+								<div>
+									<div class="form_title">Name</div>
+									<input type="text" class="comment_input " [(ngModel)]="teacher.name" [ngModelOptions]="{standalone:true}" required="required">
+								</div>
+                                <div>
+									<div class="form_title">Speciality</div>
+									<input type="text" class="comment_input " [(ngModel)]="teacher.speciality" [ngModelOptions]="{standalone:true}" required="required">
+								</div>
+                                <div>
+									<div class="form_title">Experience</div>
+									<input type="text" class="comment_input" [(ngModel)]="teacher.experience" [ngModelOptions]="{standalone:true}" required="required">
+								</div>
+                                <div>
+									<div class="form_title">Email</div>
+									<input type="text" class="comment_input" [(ngModel)]="email" [ngModelOptions]="{standalone:true}" required="required">
+								</div>
+								
+								<div>
+									<button type="submit" class="comment_button trans_200">add Teacher</button>
+								</div>
+							</form>
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+		</div>
