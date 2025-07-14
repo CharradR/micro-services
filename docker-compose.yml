@@ -143,38 +143,38 @@ services:
 
 
   # User Service - User Management Microservice
-  user-service:
-    build:
-      context: ./User
-      dockerfile: Dockerfile
-    container_name: user-service
-    restart: unless-stopped
-    ports:
-      - "8082:8082"
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/user_db?createDatabaseIfNotExist=true
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=rootpassword
-      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka
-      - SPRING_CLOUD_CONFIG_URI=http://config-server:8889
-      - APP_JWT_SECRET=yourSecretKeyHere
-      - APP_JWT_EXPIRATION_MS=86400000
-    depends_on:
-      mysql:
-        condition: service_healthy
-      eureka-server:
-        condition: service_healthy
-      config-server:
-        condition: service_healthy
-    networks:
-      - microservices-network
-    healthcheck:
-      test: [ "CMD-SHELL", "curl -f http://localhost:8082/actuator/health || exit 1" ]
-      interval: 15s
-      timeout: 5s
-      retries: 5
-      start_period: 40s
+#  user-service:
+#    build:
+#      context: ./User
+#      dockerfile: Dockerfile
+#    container_name: user-service
+#    restart: unless-stopped
+#    ports:
+#      - "8082:8082"
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=docker
+#      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/user_db?createDatabaseIfNotExist=true
+#      - SPRING_DATASOURCE_USERNAME=root
+#      - SPRING_DATASOURCE_PASSWORD=rootpassword
+#      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka
+#      - SPRING_CLOUD_CONFIG_URI=http://config-server:8889
+#      - APP_JWT_SECRET=yourSecretKeyHere
+#      - APP_JWT_EXPIRATION_MS=86400000
+#    depends_on:
+#      mysql:
+#        condition: service_healthy
+#      eureka-server:
+#        condition: service_healthy
+#      config-server:
+#        condition: service_healthy
+#    networks:
+#      - microservices-network
+#    healthcheck:
+#      test: [ "CMD-SHELL", "curl -f http://localhost:8082/actuator/health || exit 1" ]
+#      interval: 15s
+#      timeout: 5s
+#      retries: 5
+#      start_period: 40s
 
 
 
@@ -202,8 +202,8 @@ services:
         condition: service_healthy
       library-service:
         condition: service_healthy
-      user-service:
-        condition: service_healthy
+#      user-service:
+#        condition: service_healthy
     networks:
       - microservices-network
     healthcheck:
@@ -213,21 +213,21 @@ services:
       retries: 5
 
   # Angular Frontend
-  # education-frontend:
-  #   build:
-  #     context: ./EducationProject
-  #     dockerfile: Dockerfile
-  #   container_name: education-frontend
-  #   restart: unless-stopped
-  #   ports:
-  #     - "4200:80"
-  #   environment:
-  #     - API_URL=http://gateway:8083
-  #   depends_on:
-  #     gateway:
-  #       condition: service_healthy
-  #   networks:
-  #     - microservices-network
+  education-frontend:
+     build:
+       context: ./EducationProject
+       dockerfile: Dockerfile
+     container_name: education-frontend
+     restart: unless-stopped
+     ports:
+       - "4200:80"
+     environment:
+       - API_URL=http://gateway:8083
+     depends_on:
+       gateway:
+         condition: service_healthy
+     networks:
+       - microservices-network
 
 volumes:
   mongodb_data:
