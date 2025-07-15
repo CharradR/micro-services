@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -50,6 +51,20 @@ public class LoanController {
             return ResponseEntity.internalServerError().body(Map.of("error", "Erreur serveur : " + e.getMessage()));
         }
     }
+    @PostMapping("/{loanId}/send-avertissement")
+    public ResponseEntity<Map<String, String>> sendAvertissement(@PathVariable String loanId) {
+        try {
+            loanService.sendAvertissementEmail(loanId);
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Avertissement envoyé avec succès.");
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
+        }
+    }
+
 
     @PutMapping("/{loanId}/return")
     public ResponseEntity<?> returnBook(@PathVariable String loanId) {

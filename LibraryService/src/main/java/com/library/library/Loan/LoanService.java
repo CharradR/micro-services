@@ -73,5 +73,44 @@ public class LoanService {
         mailSender.send(message);
     }
 
+    public void sendAvertissementEmail(String loanId) {
+        Loan loan = loanRepo.findById(loanId)
+                .orElseThrow(() -> new RuntimeException("Prêt introuvable"));
+
+        if (!loan.getDueDate().isBefore(LocalDate.now())) {
+            throw new RuntimeException("La date d’échéance n’est pas encore dépassée.");
+        }
+
+        Book book = bookRepo.findById(loan.getBookId())
+                .orElseThrow(() -> new RuntimeException("Livre introuvable"));
+
+        String subject = "📢 Avertissement - Livre non retourné : " + book.getTitle();
+
+        String body = String.format("""
+        Bonjour,
+
+        Ceci est un rappel que vous n'avez pas encore retourné le livre suivant :
+
+        📘 Titre     : %s
+        ✍️ Auteur    : %s
+        📂 Catégorie : %s
+
+        ⏳ Date limite de retour : %s
+
+        Merci de retourner le livre dès que possible pour éviter toute pénalité.
+
+        - Votre bibliothèque
+    """, book.getTitle(), book.getAuthor(), book.getCategory(), loan.getDueDate());
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("tunisys05@gmail.com");
+        message.setTo(loan.getUserEmail());
+        message.setSubject(subject);
+        message.setText(body);
+
+        mailSender.send(message);
+    }
+
+
 
 }
