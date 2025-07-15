@@ -1,4 +1,4 @@
- <!-- <div class="main-content" *ngIf="book; else loading">  -->
+<!-- <div class="main-content" *ngIf="book; else loading">  -->
 <div class="main-content" *ngIf="book">
 
     <div class="pie-image">
@@ -46,9 +46,15 @@
 
                 </div>
             </div>
-            <input type="email" [(ngModel)]="email" placeholder="Votre email" />
+            <!-- From Uiverse.io by Yaya12085 -->
+            <div class="grid w-full max-w-xs items-center gap-1.5 mt-5">
+                <h4 class="text-black ">Please enter your Email to borrow a book</h4>
+                <input [(ngModel)]="email" placeholder="example@email.com" type="email"
+                    class="px-3 w-[250px] text-[14px]  text-white p-2 border border-black rounded-md outline-none ring-2 ring-blue-500/0 focus:ring-blue-500" />
+            </div>
+
             <div class="pie-recipe__subtitle">
-            <button (click)="borrowBook(book.id)" class="booking" >Book Now</button>
+                <button (click)="borrowBook(book.id)" class="booking">Book Now</button>
             </div>
 
 

@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs'
 export interface Loan {
-  id: string;
+  id?: string;
   bookId: string;
-  userEmail: string;
+  email: string;
   loanDate: string;
   dueDate: string;
   returned: boolean;
@@ -19,8 +19,8 @@ export class LoanService {
 
   constructor(private http: HttpClient) { }
 
-  borrowBook(bookId: string, userEmail: string): Observable<any> {
-    const body = { bookId, userEmail };
+  borrowBook(bookId: string, email: string): Observable<any> {
+    const body = { bookId, email };
     return this.http.post(this.apiUrl, body);
   }
 

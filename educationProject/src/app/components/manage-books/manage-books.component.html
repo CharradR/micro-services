@@ -43,7 +43,6 @@
               type="button">
               edit
             </button>
-          <button class="btn btn-primary" (click)="editBook(book)">Edit</button>
         </td>
         <td>
            <button (click)="deleteBook(book)"
@@ -58,101 +57,7 @@
   </table>
 </div>
 
-<!-- 
-<div class="container crud-table">
-  <div class="clearfix mb-3">
-    <div class="form-inline pull-left">
-      <button class="btn btn-success" (click)="addBook()">
-        <span class="glyphicon glyphicon-plus"></span>
-        Add more book
-      </button>
-    </div>
 
-    <div class="form-inline pull-right">
-      Search by title:
-      <input class="form-control ml-2" type="text" [(ngModel)]="searchTitle" placeholder="Type title to search" />
-    </div>
-  </div>
-
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Title</th>
-        <th>Author</th>
-        <th>Category</th>
-        <th>Availability</th>
-        <th>Quantity</th>
-        <th></th>
-        <th></th>
-      </tr>
-    </thead>
-
-    <tbody class="text-center">
-   
-      <tr *ngFor="let book of filteredBooks" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-
-        <td>{{ book.title }}</td>
-        <td>{{ book.author }}</td>
-        <td>{{ book.category }}</td>
-        <td>{{ book.available }}</td>
-        <td>{{ book.quantity }}</td>
-
-
-        <td>
-          <button class="btn btn-primary" (click)="editBook(book)">Edit</button>
-        </td>
-        <td>
-          <button class="btn btn-danger" (click)="deleteBook(book)">Delete</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div> -->
-<!-- <div class="crude-form__wrapper" *ngIf="isFormVisible">
-  <h3 *ngIf="isEditing">Edit Book</h3>
-  <h3 *ngIf="!isEditing">Add Book</h3>
-
-  <form #bookForm="ngForm">
-    <div class="form-group">
-      <label for="title">Title</label>
-      <input class="form-control" id="edittitle" type="text" name="title" [(ngModel)]="formData.title" required
-        placeholder="Enter title" />
-      <div class="alert alert-danger" *ngIf="bookForm.submitted && !formData.title">Please input title</div>
-    </div>
-
-    <div class="form-group">
-      <label for="author">Author</label>
-      <input class="form-control" id="editAuthor" type="text" name="author" [(ngModel)]="formData.author" required
-        placeholder="Enter author" />
-      <div class="alert alert-danger" *ngIf="bookForm.submitted && !formData.author">Please input author</div>
-    </div>
-
-    <div class="form-group">
-      <label for="category">Category</label>
-      <input class="form-control" id="editCategory" type="text" name="category" [(ngModel)]="formData.category" required
-        placeholder="Enter category" />
-      <div class="alert alert-danger" *ngIf="bookForm.submitted && !formData.category">Please input category</div>
-    </div>
-
-    <div class="form-group">
-      <label for="available">Available</label>
-      <input class="form-control" id="editAvailable" type="text" name="available" [(ngModel)]="formData.available"
-        required placeholder="Enter availability" />
-      <div class="alert alert-danger" *ngIf="bookForm.submitted && !formData.available">Please input availability</div>
-    </div>
-    <div class="form-group">
-      <label for="quantity">Quantity</label>
-      <input class="form-control" id="editQuantity" type="text" name="quantity" [(ngModel)]="formData.quantity" required
-        placeholder="Enter quantity" />
-      <div class="alert alert-danger" *ngIf="bookForm.submitted && !formData.quantity">Please input quantity</div>
-    </div>
-
-    <button class="btn btn-primary" (click)="saveBook()">
-      <i class="glyphicon glyphicon-pencil"></i> Save
-    </button>
-    <button class="btn btn-secondary" (click)="cancelForm()">Cancel</button>
-  </form>
-</div> -->
 <div class="max-w-xl mx-auto bg-white p-6 rounded shadow-md mt-6" *ngIf="isFormVisible">
   <h3 class="text-xl font-semibold mb-4 text-center" *ngIf="isEditing">Edit Book</h3>
   <h3 class="text-xl font-semibold mb-4 text-center" *ngIf="!isEditing">Add Book</h3>

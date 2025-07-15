@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BookService, Book } from 'src/app/services/book.service';
+import { LoanService } from 'src/app/services/loan.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-book-details',
@@ -14,19 +16,11 @@ export class BookDetailsComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private bookService: BookService
+    private bookService: BookService,
+    private loanService: LoanService
   ) { }
   imageUrl: string | undefined;
 
-  // ngOnInit(): void {
-  //   const id = this.route.snapshot.paramMap.get('id');
-  //   if (id) {
-  //     this.bookService.getBookById(id).subscribe({
-  //       next: (book) => (this.book = book),
-  //       error: (err) => console.error('Erreur de chargement :', err)
-  //     });
-  //   }
-  // }
   ngOnInit(): void {
     this.loading = true;
 
@@ -43,21 +37,55 @@ export class BookDetailsComponent {
   }
   email: string = '';
 
-borrowBook(id: string | undefined) {
+// borrowBook(bookId: string | undefined) {
+//   if (!this.email) {
+//     alert('Veuillez entrer votre email.');
+//     return;
+//   }
+//    if (!bookId) {
+//     alert('Le livre n\'est pas disponible.');
+//     return;
+//   }
+//    this.loanService.borrowBook(bookId, this.email).subscribe({
+//   next: () => alert("📚 Emprunt effectué ! Vérifiez votre email."),
+//   error: err => alert("❌ Erreur : " + (err.error?.message || err.message))
+// });
+
+// }
+// borrowBook(bookId: string | undefined) {
+//   if (!this.email) {
+//     alert('Veuillez entrer votre email.');
+//     return;
+//   }
+
+//   if (!bookId) {
+//     alert('Le livre n\'est pas disponible.');
+//     return;
+//   }
+
+//   this.loanService.borrowBook(bookId, this.email).subscribe({
+//     next: () => alert("📚 Emprunt effectué ! Vérifiez votre email."),
+//     error: err => alert("❌ Erreur quantité insuffissante " )
+//   });
+// }
+borrowBook(bookId: string | undefined) {
   if (!this.email) {
-    alert('Veuillez entrer votre email.');
+    Swal.fire('Oops...', 'Veuillez entrer votre email.', 'warning');
     return;
   }
-   if (!id) {
-    alert('Le livre n\'est pas disponible.');
+  if (!bookId) {
+    Swal.fire('Erreur', "Le livre n'est pas disponible.", 'error');
     return;
   }
-  // this.http.post('/api/loans', {
-  //    bookId: id,
-  //    email: this.email
-  //  }).subscribe({
-  //    next: () => alert("Emprunt effectué ! Vérifiez votre email."),
-  //  error: err => alert("Erreur : " + err.error?.message || err.message)
-  //  });
+
+  this.loanService.borrowBook(bookId, this.email).subscribe({
+    next: () => {
+      Swal.fire('Succès', 'Emprunt effectué ! Vérifiez votre email.', 'success');
+    },
+    error: err => {
+      Swal.fire('Erreur quantité insuffissante');
+    }
+  });
 }
+
 }

@@ -61,32 +61,36 @@ export class ManageBooksComponent {
     this.formData = { ...book }; // copie TOUT, y compris id (même si on ne l'affiche pas)
     this.editIndex = this.books.findIndex(b => b.id === book.id);
   }
-
-
-  // 💾 Enregistrer (ajout ou modification)
-  saveBook(): void {
-    if (this.isEditing && this.formData.id) {
-      // mode édition
-      this.bookService.updateBook(this.formData.id, this.formData).subscribe({
-        next: updated => {
-          if (this.editIndex !== null) {
-            this.books[this.editIndex] = updated;
-          }
-          this.isFormVisible = false;
-        },
-        error: err => console.error('Failed to update book:', err)
-      });
-    } else {
-      // mode ajout
-      this.bookService.addBook(this.formData).subscribe({
-        next: created => {
-          this.books.push(created);
-          this.isFormVisible = false;
-        },
-        error: err => console.error('Failed to add book:', err)
-      });
+saveBook(): void {
+  if (this.isEditing && this.formData.id) {
+    // Update existing book
+    this.bookService.updateBook(this.formData.id, this.formData).subscribe({
+      next: updated => {
+        if (this.editIndex !== null) {
+          this.books[this.editIndex] = updated;
+        }
+        this.isFormVisible = false;
+      },
+      error: err => console.error('Failed to update book:', err)
+    });
+  } else {
+    // Add new book
+    const newBook = { ...this.formData };
+    if (!newBook.id) {
+      delete newBook.id; // ✅ Let the backend (MongoDB) generate the ID
     }
+
+    this.bookService.addBook(newBook).subscribe({
+      next: created => {
+        this.books.push(created);
+        this.isFormVisible = false;
+      },
+      error: err => console.error('Failed to add book:', err)
+    });
   }
+}
+
+
 
   // ❌ Supprimer un livre
   deleteBook(book: Book): void {
