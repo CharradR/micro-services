@@ -1,0 +1,42 @@
+<div class="flex flex-col items-center mt-9 w-full">
+    <div class="flex justify-between items-center  w-full max-w-4xl mb-4 px-4">
+        <input [(ngModel)]="searchEmail" type="text" placeholder="Search by email ..."
+            class="px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-[250px]" />
+    </div>
+    <table class="text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">Book Title</th>
+                <th scope="col" class="px-6 py-3"> Quantity</th>
+                <th scope="col" class="px-6 py-3">Email</th>
+                <th scope="col" class="px-6 py-3">LoanDate</th>
+                <th scope="col" class="px-6 py-3">DueDate</th>
+                <th scope="col" class="px-6 py-3">Returned</th>
+                <th scope="col" class="px-6 py-3"></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr *ngFor="let loan of filteredLoans"
+                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    {{ loan.bookDetails?.title || loan.bookId }}</th>
+                <td class="px-6 py-4">{{ loan.bookDetails?.quantity }}</td>
+                <td class="px-6 py-4">{{ loan.userEmail }}</td>
+
+                <td class="px-6 py-4">{{ loan.loanDate }}</td>
+                <td class="px-6 py-4">{{ loan.dueDate }}</td>
+                <td class="px-6 py-4"> {{ loan.returned }}</td>
+
+                <td>
+                    <button
+                        class="text-black  bg-gradient-to-r from-yellow-500 via-yellow-600 to-yellow-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-yellow-300 dark:focus:ring-yellow-800 shadow-lg shadow-yellow-500/50 dark:shadow-lg dark:shadow-yellow-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+                        type="button">
+                        Returned
+                    </button>
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+</div>

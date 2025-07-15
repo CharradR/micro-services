@@ -13,6 +13,7 @@ import { TeacherInfoComponent } from './components/teacher-info/teacher-info.com
 import { BooksComponent } from './components/books/books.component';
 import { ManageBooksComponent } from './components/manage-books/manage-books.component';
 import { BookDetailsComponent } from './components/book-details/book-details.component';
+import { LoansComponent } from './components/loans/loans.component';
 
   
 const routes: Routes = [
@@ -37,6 +38,7 @@ const routes: Routes = [
     // http://localhost:4200//teacherInfo
     { path: "teacherInfo", component: TeacherInfoComponent},
     { path: "books", component: BooksComponent},
+    { path: "loans", component: LoansComponent},
     { path: "books/manage", component: ManageBooksComponent},
     { path: 'books/:id', component: BookDetailsComponent}
 

@@ -19,6 +19,7 @@ import { TeacherComponent } from './components/teacher/teacher.component';
 import { TeacherInfoComponent } from './components/teacher-info/teacher-info.component';
 import { TeachersComponent } from './components/teachers/teachers.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { LoansComponent } from './components/loans/loans.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     SignupComponent,
     TeacherComponent,
     TeacherInfoComponent,
-    TeachersComponent
+    TeachersComponent,
+    LoansComponent
   ],
   imports: [
     BrowserModule,
