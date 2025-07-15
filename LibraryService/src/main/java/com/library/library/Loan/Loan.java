@@ -12,8 +12,7 @@ public class Loan {
     private String id;
 
     private String bookId;
-    private String userEmail; // comes from User microservice
-    //private String userId; // comes from User microservice
+    private String userEmail;
     private LocalDate loanDate = LocalDate.now();
     private LocalDate dueDate;
     private Boolean returned  = false;
@@ -55,17 +54,15 @@ public class Loan {
         return dueDate;
     }
 
-    public Boolean getReturned() {
+    public boolean isReturned() {
         return returned;
     }
 
-    public void setReturned(Boolean returned) {
+    public void setReturned(boolean returned) {
         this.returned = returned;
     }
-
     public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
-
 
 }

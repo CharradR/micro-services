@@ -1,6 +1,7 @@
 package com.library.library.Loan;
 
 import com.library.library.book.Book;
+import com.library.library.book.bookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +15,14 @@ import java.util.Map;
 public class LoanController {
     private final loanRepository loanRepository;
     private final LoanService loanService;
+    @Autowired
+    private bookRepository bookRepository;
 
     public LoanController(loanRepository loanRepository, LoanService loanService) {
         this.loanRepository = loanRepository;
         this.loanService = loanService;
+        this.bookRepository = bookRepository;
+
     }
     @GetMapping
     public List<Loan> getLoansList() {
@@ -45,4 +50,42 @@ public class LoanController {
             return ResponseEntity.internalServerError().body(Map.of("error", "Erreur serveur : " + e.getMessage()));
         }
     }
+
+    @PutMapping("/{loanId}/return")
+    public ResponseEntity<?> returnBook(@PathVariable String loanId) {
+        try {
+            // Récupérer le prêt
+            Loan loan = loanRepository.findById(loanId)
+                    .orElseThrow(() -> new RuntimeException("Prêt non trouvé"));
+
+            if (loan.isReturned()) {
+                return ResponseEntity.badRequest().body(Map.of("error", "Ce prêt est déjà retourné"));
+            }
+
+            // Mettre à jour le statut returned
+            loan.setReturned(true);
+            loanRepository.save(loan);
+
+            // Incrémenter la quantité du livre
+            Book book = bookRepository.findById(loan.getBookId())
+                    .orElseThrow(() -> new RuntimeException("Livre non trouvé"));
+
+            book.setQuantity(book.getQuantity() + 1);
+            bookRepository.save(book);
+
+            return ResponseEntity.ok(Map.of("message", "Livre retourné avec succès"));
+
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(Map.of("error", "Erreur serveur : " + e.getMessage()));
+        }
+    }
+
+    // ❌ Supprimer un loan
+    @DeleteMapping("/{id}")
+    public void deleteLoan(@PathVariable String id) {
+        loanRepository.deleteById(id);
+    }
+
 }
