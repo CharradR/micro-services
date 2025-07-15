@@ -1,0 +1,11 @@
+# Ignore node_modules in educationProject
+/educationProject/node_modules/
+
+# Ignore Angular cache in educationProject
+/educationProject/.angular/cache/
+
+# Optionally, ignore other common Angular and Node.js files
+/educationProject/dist/
+/educationProject/out-tsc/
+/educationProject/.vscode/
+/educationProject/*.log
