@@ -37,37 +37,7 @@ export class BookDetailsComponent {
   }
   email: string = '';
 
-// borrowBook(bookId: string | undefined) {
-//   if (!this.email) {
-//     alert('Veuillez entrer votre email.');
-//     return;
-//   }
-//    if (!bookId) {
-//     alert('Le livre n\'est pas disponible.');
-//     return;
-//   }
-//    this.loanService.borrowBook(bookId, this.email).subscribe({
-//   next: () => alert("📚 Emprunt effectué ! Vérifiez votre email."),
-//   error: err => alert("❌ Erreur : " + (err.error?.message || err.message))
-// });
 
-// }
-// borrowBook(bookId: string | undefined) {
-//   if (!this.email) {
-//     alert('Veuillez entrer votre email.');
-//     return;
-//   }
-
-//   if (!bookId) {
-//     alert('Le livre n\'est pas disponible.');
-//     return;
-//   }
-
-//   this.loanService.borrowBook(bookId, this.email).subscribe({
-//     next: () => alert("📚 Emprunt effectué ! Vérifiez votre email."),
-//     error: err => alert("❌ Erreur quantité insuffissante " )
-//   });
-// }
 borrowBook(bookId: string | undefined) {
   if (!this.email) {
     Swal.fire('Oops...', 'Veuillez entrer votre email.', 'warning');

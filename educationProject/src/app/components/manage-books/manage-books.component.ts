@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Book, BookService } from 'src/app/services/book.service';
+import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-manage-books',
   templateUrl: './manage-books.component.html',
@@ -84,25 +86,50 @@ saveBook(): void {
       next: created => {
         this.books.push(created);
         this.isFormVisible = false;
+        Swal.fire('Success!', `"${created.title}" has been added.`, 'success');
       },
       error: err => console.error('Failed to add book:', err)
     });
   }
 }
 
+deleteBook(book: Book): void {
+  if (!book.id) return;
+
+  Swal.fire({
+    title: `Are you sure you want to delete "${book.title}"?`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, delete it!',
+    cancelButtonText: 'Cancel',
+  }).then(result => {
+    if (result.isConfirmed) {
+      this.bookService.deleteBook(book.id!).subscribe({
+        next: () => {
+          this.books = this.books.filter(b => b.id !== book.id);
+          Swal.fire('Deleted!', `"${book.title}" has been deleted.`, 'success');
+        },
+        error: err => {
+          console.error('Failed to delete book:', err);
+          Swal.fire('Error', 'Failed to delete the book. Please try again.', 'error');
+        }
+      });
+    }
+  });
+}
 
 
   // ❌ Supprimer un livre
-  deleteBook(book: Book): void {
-    if (book.id && confirm(`Are you sure you want to delete "${book.title}"?`)) {
-      this.bookService.deleteBook(book.id).subscribe({
-        next: () => {
-          this.books = this.books.filter(b => b.id !== book.id);
-        },
-        error: err => console.error('Failed to delete book:', err)
-      });
-    }
-  }
+  // deleteBook(book: Book): void {
+  //   if (book.id && confirm(`Are you sure you want to delete "${book.title}"?`)) {
+  //     this.bookService.deleteBook(book.id).subscribe({
+  //       next: () => {
+  //         this.books = this.books.filter(b => b.id !== book.id);
+  //       },
+  //       error: err => console.error('Failed to delete book:', err)
+  //     });
+  //   }
+  // }
 
   // 🔙 Annuler formulaire
   cancelForm(): void {
