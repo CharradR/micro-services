@@ -19,8 +19,8 @@ import { StudentDashboardComponent } from './components/student-dashboard/studen
 
 
 const routes: Routes = [
-  // { path: 'admin-dashboard', component: AdminDashboardComponent },
-  // { path: 'student-dashboard', component: StudentDashboardComponent },
+ { path: 'admin-dashboard', component: AdminDashboardComponent },
+{ path: 'student-dashboard', component: StudentDashboardComponent },
   // { path: 'unauthorized', component: UnauthorizedComponent },
  
   // http://localhost:4200/

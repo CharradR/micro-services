@@ -34,7 +34,7 @@ export interface UserProfile {
 export class KeycloakService {
   private config: KeycloakConfig = {
     url: 'http://localhost:8080',
-    realm: 'LibraryKeyClock', 
+    realm: 'LibraryKeyClock',
     clientId: 'frontend-client' // Update this to match your client
   };
 
@@ -76,14 +76,14 @@ export class KeycloakService {
   login(): void {
     const state = this.generateRandomString(32);
     const nonce = this.generateRandomString(32);
-    
+
     // Store state and nonce for security validation
     sessionStorage.setItem('oauth_state', state);
     sessionStorage.setItem('oauth_nonce', nonce);
     sessionStorage.setItem('return_url', window.location.href);
 
     const authUrl = this.buildAuthUrl(state, nonce);
-    
+
     console.log('Redirecting to Keycloak login:', authUrl);
     window.location.href = authUrl;
   }
@@ -166,7 +166,7 @@ export class KeycloakService {
    */
   private exchangeCodeForTokens(code: string): Observable<boolean> {
     const tokenUrl = `${this.config.url}/realms/${this.config.realm}/protocol/openid-connect/token`;
-    
+
     const body = new URLSearchParams();
     body.set('grant_type', 'authorization_code');
     body.set('client_id', this.config.clientId);
@@ -199,10 +199,10 @@ export class KeycloakService {
     url.searchParams.delete('code');
     url.searchParams.delete('state');
     url.searchParams.delete('session_state');
-    
+
     // Update URL without refreshing the page
     window.history.replaceState({}, document.title, url.toString());
-    
+
     // Clean up session storage
     sessionStorage.removeItem('oauth_state');
     sessionStorage.removeItem('oauth_nonce');
@@ -214,7 +214,7 @@ export class KeycloakService {
   private redirectToOriginalPage(): void {
     const returnUrl = sessionStorage.getItem('return_url');
     sessionStorage.removeItem('return_url');
-    
+
     if (returnUrl && returnUrl !== window.location.href) {
       window.location.href = returnUrl;
     }
@@ -237,7 +237,7 @@ export class KeycloakService {
    */
   logout(): Observable<boolean> {
     const logoutUrl = `${this.config.url}/realms/${this.config.realm}/protocol/openid-connect/logout`;
-    
+
     const refreshToken = this.getRefreshToken();
     if (!refreshToken) {
       this.clearToken();
@@ -275,7 +275,7 @@ export class KeycloakService {
     }
 
     const tokenUrl = `${this.config.url}/realms/${this.config.realm}/protocol/openid-connect/token`;
-    
+
     const body = new URLSearchParams();
     body.set('grant_type', 'refresh_token');
     body.set('client_id', this.config.clientId);
@@ -388,7 +388,7 @@ getUserRoles(): string[] {
    */
   private loadUserProfile(): void {
     const userInfoUrl = `${this.config.url}/realms/${this.config.realm}/protocol/openid-connect/userinfo`;
-    
+
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${this.getToken()}`
     });

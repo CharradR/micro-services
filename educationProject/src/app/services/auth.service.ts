@@ -58,32 +58,46 @@ get clientRoles(): string[] {
   //   const token = this.oauthService.getAccessToken();
   //   if (!token) return [];
 
-  //   try {
-  //     const tokenPayload = JSON.parse(atob(token.split('.')[1]));
-  //     const clientId = this.oauthService.clientId || 'angular-client';
-  //     const roles = tokenPayload.resource_access?.[clientId]?.roles || [];
-  //     return roles;
-  //   } catch (e) {
-  //     console.error('Error decoding token:', e);
-  //     return [];
-  //   }
-  // }
+   
 
-  get allRoles(): string[] {
-    const token = this.oauthService.getAccessToken();
-    if (!token) return [];
 
+//   get allRoles(): string[] {
+//   const claims: any = this.oauthService.getIdentityClaims();
+//   if (!claims) {
+//     return [];
+//   }
+//   const realmRoles = claims.realm_access?.roles || [];
+//   const clientRoles = claims.resource_access?.['frontend-client']?.roles || [];
+//   return [...realmRoles, ...clientRoles];
+// }
+get allRoles(): string[] {
+  const token = this.oauthService.getAccessToken();
+  if (!token) {
+    console.log('No access token found');
+    return [];
+  }
+
+  try {
     const tokenParts = token.split('.');
-    if (tokenParts.length !== 3) return [];
+    if (tokenParts.length !== 3) {
+      console.log('Invalid token format');
+      return [];
+    }
 
     const payload = JSON.parse(atob(tokenParts[1]));
+
     const realmRoles = payload.realm_access?.roles || [];
 
-    const clientId = this.oauthService.clientId || 'angular-client';
+    const clientId = this.oauthService.clientId || 'frontend-client';
     const clientRoles = payload.resource_access?.[clientId]?.roles || [];
 
-    return [...realmRoles, ...clientRoles];
+    const allRoles = [...realmRoles, ...clientRoles];
+    return allRoles;
+  } catch (error) {
+    console.error('Error parsing token for roles:', error);
+    return [];
   }
+}
 
 
   login() {
@@ -109,18 +123,19 @@ get clientRoles(): string[] {
 
   get roles(): string[] {
     const claims: any = this.oauthService.getIdentityClaims();
-    if (!claims || !claims.resource_access || !claims.resource_access['angular-client']) {
+    if (!claims || !claims.resource_access || !claims.resource_access['frontend-client']) {
       return [];
     }
 
-    return claims.resource_access['angular-client'].roles || [];
+    return claims.resource_access['frontend-client'].roles || [];
   }
 
 
 
   hasRole(role: string): boolean {
-    return this.clientRoles.includes(role);
+    const userRoles = this.allRoles;
+    console.log('Checking role:', role, 'against user roles:', userRoles);
+    return userRoles.includes(role);
   }
-
 
 }
