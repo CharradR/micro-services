@@ -33,30 +33,41 @@ export class AuthService {
     });
   }
 
+get clientRoles(): string[] {
+  const token = this.oauthService.getAccessToken();
+  if (!token) return [];
+
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.resource_access?.['frontend-client']?.roles || [];
+  } catch (e) {
+    return [];
+  }
+}
 
   private redirectAfterLogin() {
-    if (this.hasRole('ADMIN')) {
+    if (this.hasRole('ROLE_ADMIN')) {
       this.router.navigate(['/admin-dashboard']);
-    } else if (this.hasRole('STUDENT')) {
+    } else if (this.hasRole('ROLE_STUDENT')) {
       this.router.navigate(['/student-dashboard']);
     } else {
       this.router.navigate(['/home']);
     }
   }
-  get clientRoles(): string[] {
-    const token = this.oauthService.getAccessToken();
-    if (!token) return [];
+  // get clientRoles(): string[] {
+  //   const token = this.oauthService.getAccessToken();
+  //   if (!token) return [];
 
-    try {
-      const tokenPayload = JSON.parse(atob(token.split('.')[1]));
-      const clientId = this.oauthService.clientId || 'angular-client';
-      const roles = tokenPayload.resource_access?.[clientId]?.roles || [];
-      return roles;
-    } catch (e) {
-      console.error('Error decoding token:', e);
-      return [];
-    }
-  }
+  //   try {
+  //     const tokenPayload = JSON.parse(atob(token.split('.')[1]));
+  //     const clientId = this.oauthService.clientId || 'angular-client';
+  //     const roles = tokenPayload.resource_access?.[clientId]?.roles || [];
+  //     return roles;
+  //   } catch (e) {
+  //     console.error('Error decoding token:', e);
+  //     return [];
+  //   }
+  // }
 
   get allRoles(): string[] {
     const token = this.oauthService.getAccessToken();
