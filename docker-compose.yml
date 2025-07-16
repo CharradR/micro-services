@@ -93,9 +93,12 @@ services:
 
   # Keycloak - Authentication Server
   keycloak:
-    image: quay.io/keycloak/keycloak:23.0.0
+    build :
+      context: ./keycloak-23.0.0
+      dockerfile: Dockerfile
+
+#  image: quay.io/keycloak/keycloak:23.0.0
     container_name: keycloak
-    command: start-dev
     ports:
       - "8084:8080"  # External : Internal
     environment:

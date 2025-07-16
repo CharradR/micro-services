@@ -14,14 +14,15 @@ import { BooksComponent } from './components/books/books.component';
 import { ManageBooksComponent } from './components/manage-books/manage-books.component';
 import { BookDetailsComponent } from './components/book-details/book-details.component';
 import { LoansComponent } from './components/loans/loans.component';
-import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
+import { StudentDashboardComponent } from './components/student-dashboard/student-dashboard.component';
 
 
 const routes: Routes = [
-  { path: 'admin-dashboard', component: AdminDashboardComponent },
-  // { path: 'user-dashboard', component: UserDashboardComponent },
+  // { path: 'admin-dashboard', component: AdminDashboardComponent },
+  // { path: 'student-dashboard', component: StudentDashboardComponent },
   // { path: 'unauthorized', component: UnauthorizedComponent },
-  // { path: '**', redirectTo: '/' }
+ 
   // http://localhost:4200/
   { path: "", component: HomeComponent },
   { path: "home", component: HomeComponent },

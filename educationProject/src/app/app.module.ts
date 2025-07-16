@@ -21,7 +21,7 @@ import { TeachersComponent } from './components/teachers/teachers.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoansComponent } from './components/loans/loans.component';
 import { OAuthModule } from 'angular-oauth2-oidc';
-import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { StudentDashboardComponent } from './components/student-dashboard/student-dashboard.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,7 +41,7 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
     TeacherInfoComponent,
     TeachersComponent,
     LoansComponent,
-    AdminDashboardComponent
+    StudentDashboardComponent
   ],
   imports: [
     BrowserModule,

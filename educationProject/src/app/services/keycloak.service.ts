@@ -34,8 +34,8 @@ export interface UserProfile {
 export class KeycloakService {
   private config: KeycloakConfig = {
     url: 'http://localhost:8080',
-    realm: 'myrealm', // Update this to match your realm
-    clientId: 'angular-client' // Update this to match your client
+    realm: 'LibraryKeyClock', 
+    clientId: 'frontend-client' // Update this to match your client
   };
 
   private tokenSubject = new BehaviorSubject<string | null>(null);
