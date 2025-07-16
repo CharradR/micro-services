@@ -43,8 +43,8 @@
               class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Teachers</a>
             <a routerLink="/books"
               class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Books</a>
-            <a routerLink="/loans"
-              class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Loans</a>
+            <!-- <a routerLink="/loans"
+              class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Loans</a> -->
             <!-- Show Logout only when logged in -->
             <button class="text-gray-300" *ngIf="authService.isLoggedIn" (click)="logout()">Logout</button>
 
