@@ -141,7 +141,37 @@ services:
         condition: service_started
     networks:
       - microservices-network
-
+  # Grade Service - Grade and Notes Management Microservice
+#  grade-service:
+#    build:
+#      context: ./GradeService
+#      dockerfile: Dockerfile
+#    container_name: grade-service
+#    restart: unless-stopped
+#    ports:
+#      - "8085:8085"
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=docker
+#      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/gestion_grade?createDatabaseIfNotExist=true
+#      - SPRING_DATASOURCE_USERNAME=root
+#      - SPRING_DATASOURCE_PASSWORD=rootpassword
+#      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka
+#      - SPRING_CLOUD_CONFIG_URI=http://config-server:8889
+#    depends_on:
+#      mysql:
+#        condition: service_healthy
+#      eureka-server:
+#        condition: service_healthy
+#      config-server:
+#        condition: service_healthy
+#    networks:
+#      - microservices-network
+#    healthcheck:
+#      test: [ "CMD-SHELL", "curl -f http://localhost:8085/actuator/health || exit 1" ]
+#      interval: 15s
+#      timeout: 5s
+#      retries: 5
+#      start_period: 40s
 
   # User Service - User Management Microservice
   user-service:

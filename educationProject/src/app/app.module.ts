@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http'; 
+import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AddCourseComponent } from './components/add-course/add-course.component';
@@ -20,7 +20,8 @@ import { TeacherInfoComponent } from './components/teacher-info/teacher-info.com
 import { TeachersComponent } from './components/teachers/teachers.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoansComponent } from './components/loans/loans.component';
-
+import { OAuthModule } from 'angular-oauth2-oidc';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,15 +40,23 @@ import { LoansComponent } from './components/loans/loans.component';
     TeacherComponent,
     TeacherInfoComponent,
     TeachersComponent,
-    LoansComponent
+    LoansComponent,
+    AdminDashboardComponent
   ],
   imports: [
     BrowserModule,
+    OAuthModule.forRoot({ 
+      resourceServer: {
+        allowedUrls: ['http://localhost:8081'], 
+        sendAccessToken: true,
+      },
+    }),
     HttpClientModule,
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-   
+
+
   ],
   providers: [],
   bootstrap: [AppComponent]

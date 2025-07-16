@@ -34,8 +34,8 @@ export interface UserProfile {
 export class KeycloakService {
   private config: KeycloakConfig = {
     url: 'http://localhost:8080',
-    realm: 'LibraryKeyClock', // Update this to match your realm
-    clientId: 'frontend-client' // Update this to match your client
+    realm: 'myrealm', // Update this to match your realm
+    clientId: 'angular-client' // Update this to match your client
   };
 
   private tokenSubject = new BehaviorSubject<string | null>(null);
@@ -337,17 +337,37 @@ export class KeycloakService {
   /**
    * Get user roles from token
    */
-  getUserRoles(): string[] {
-    const token = this.getToken();
-    if (!token) return [];
+  // getUserRoles(): string[] {
+  //   const token = this.getToken();
+  //   if (!token) return [];
 
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      return payload.realm_access?.roles || [];
-    } catch (error) {
-      return [];
-    }
+  //   try {
+  //     const payload = JSON.parse(atob(token.split('.')[1]));
+  //     return payload.realm_access?.roles || [];
+  //   } catch (error) {
+  //     return [];
+  //   }
+  // }
+getUserRoles(): string[] {
+  const token = this.getToken();
+  if (!token) return [];
+
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+
+    // Realm roles (optionnel)
+    const realmRoles = payload.realm_access?.roles || [];
+
+    // Client roles (important ici)
+    const clientRoles = payload.resource_access?.[this.config.clientId]?.roles || [];
+
+    // Fusionner les deux si nécessaire
+    return [...realmRoles, ...clientRoles];
+  } catch (error) {
+    return [];
   }
+}
+
 
   /**
    * Check if user has specific role
