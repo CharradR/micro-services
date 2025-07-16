@@ -24,6 +24,7 @@ const routes: Routes = [
   // { path: '**', redirectTo: '/' }
   // http://localhost:4200/
   { path: "", component: HomeComponent },
+  { path: "home", component: HomeComponent },
   // http://localhost:4200/teachers
   { path: "teachers", component: TeachersComponent },
   // http://localhost:4200/teachers

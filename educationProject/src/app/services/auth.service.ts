@@ -18,15 +18,30 @@ export class AuthService {
   //   this.oauthService.configure(authConfig);
   //   this.oauthService.loadDiscoveryDocumentAndTryLogin();
   // }
-  private configure() {
-    this.oauthService.configure(authConfig);
 
-    this.oauthService.loadDiscoveryDocumentAndTryLogin().then(() => {
-      if (this.oauthService.hasValidAccessToken()) {
-        this.redirectAfterLogin();
-      }
-    });
-  }
+  private configure() {
+  this.oauthService.configure(authConfig);
+
+  this.oauthService.loadDiscoveryDocumentAndTryLogin().then(() => {
+    if (this.oauthService.hasValidAccessToken()) {
+      const claims: any = this.oauthService.getIdentityClaims();
+      console.log('User claims:', claims);
+      console.log('realm_access:', claims?.realm_access);
+      console.log('resource_access:', claims?.resource_access);
+      this.redirectAfterLogin();
+    }
+  });
+}
+
+  // private configure() {
+  //   this.oauthService.configure(authConfig);
+
+  //   this.oauthService.loadDiscoveryDocumentAndTryLogin().then(() => {
+  //     if (this.oauthService.hasValidAccessToken()) {
+  //       this.redirectAfterLogin();
+  //     }
+  //   });
+  // }
   private redirectAfterLogin() {
     if (this.hasRole('ADMIN')) {
       this.router.navigate(['/admin-dashboard']);
@@ -36,15 +51,47 @@ export class AuthService {
       this.router.navigate(['/home']);
     }
   }
-  get allRoles(): string[] {
-  const claims: any = this.oauthService.getIdentityClaims();
-  if (!claims) {
+  get clientRoles(): string[] {
+  const token = this.oauthService.getAccessToken();
+  if (!token) return [];
+
+  try {
+    const tokenPayload = JSON.parse(atob(token.split('.')[1]));
+    const clientId = this.oauthService.clientId || 'angular-client';
+    const roles = tokenPayload.resource_access?.[clientId]?.roles || [];
+    return roles;
+  } catch (e) {
+    console.error('Error decoding token:', e);
     return [];
   }
-  const realmRoles = claims.realm_access?.roles || [];
-  const clientRoles = claims.resource_access?.['angular-client']?.roles || [];
+}
+
+  
+//   get allRoles(): string[] {
+//   const claims: any = this.oauthService.getIdentityClaims();
+//   if (!claims) {
+//     return [];
+//   }
+//   const realmRoles = claims.realm_access?.roles || [];
+//   const clientRoles = claims.resource_access?.['angular-client']?.roles || [];
+//   return [...realmRoles, ...clientRoles];
+// }
+get allRoles(): string[] {
+  const token = this.oauthService.getAccessToken();
+  if (!token) return [];
+
+  const tokenParts = token.split('.');
+  if (tokenParts.length !== 3) return [];
+
+  const payload = JSON.parse(atob(tokenParts[1]));
+  const realmRoles = payload.realm_access?.roles || [];
+
+  const clientId = this.oauthService.clientId || 'angular-client';
+  const clientRoles = payload.resource_access?.[clientId]?.roles || [];
+
   return [...realmRoles, ...clientRoles];
 }
+
 
   login() {
     this.oauthService.initCodeFlow();
