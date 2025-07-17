@@ -30,7 +30,6 @@ const routes: Routes = [
     canActivate: [KeycloakAuthGuard],
     data: { roles: ['ROLE_STUDENT'] }
   },
-  // { path: 'unauthorized', component: UnauthorizedComponent },
 
   // http://localhost:4200/
   { path: "", component: HomeComponent },
