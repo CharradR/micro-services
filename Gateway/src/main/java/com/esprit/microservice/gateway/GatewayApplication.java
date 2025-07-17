@@ -33,8 +33,10 @@ public class GatewayApplication {
                                 .route("library-service", r -> r.path("/api/books/**", "/api/loans/**")
                                                 .uri("lb://library-service")) // Routes books and loans to
                                                                               // library-service
+                               .route("grade-service", r -> r.path("/api/notes/**", "/api/matieres/**")
+                                .uri("lb://grade-service"))
 
-                                .build();
+                        .build();
         }
 
         @Bean
