@@ -6,18 +6,16 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDate;
 
 @Document("loans")
-
 public class Loan {
     @Id
     private String id;
 
     private String bookId;
-    private String userEmail; // comes from User microservice
-    //private String userId; // comes from User microservice
+    private String userEmail;
     private LocalDate loanDate = LocalDate.now();
     private LocalDate dueDate;
-    private Boolean returned  = false;
-    
+    private Boolean returned = false;
+
     public String getId() {
         return id;
     }
@@ -42,7 +40,6 @@ public class Loan {
         this.userEmail = userEmail;
     }
 
-
     public LocalDate getLoanDate() {
         return loanDate;
     }
@@ -55,17 +52,16 @@ public class Loan {
         return dueDate;
     }
 
-    public Boolean getReturned() {
+    public boolean isReturned() {
         return returned;
     }
 
-    public void setReturned(Boolean returned) {
+    public void setReturned(boolean returned) {
         this.returned = returned;
     }
 
     public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
-
 
 }

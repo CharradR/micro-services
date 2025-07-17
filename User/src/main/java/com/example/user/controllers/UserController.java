@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -20,7 +21,7 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    @GetMapping("/{userId}")  // Fixed: was missing closing brace
+    @GetMapping("/{userId}") // Fixed: was missing closing brace
     public ResponseEntity<User> getUserById(
             @PathVariable Long userId) {
         User user = userRepository.findById(userId).orElse(null);
@@ -34,7 +35,6 @@ public class UserController {
         return ResponseEntity.ok(user.getId());
     }
 
-
     // In UserController.java (user service)
     @GetMapping("/username-details/{username}")
     public ResponseEntity<User> getUserDetailsByUsername(@PathVariable String username) {
@@ -42,4 +42,18 @@ public class UserController {
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return ResponseEntity.ok(user);
     }
-} 
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<String> deleteUser(@PathVariable Long userId) {
+        try {
+            if (userRepository.existsById(userId)) {
+                userRepository.deleteById(userId);
+                return ResponseEntity.ok("User deleted successfully");
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Error deleting user: " + e.getMessage());
+        }
+    }
+}

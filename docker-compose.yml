@@ -11,7 +11,7 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: rootpassword
-      MONGO_INITDB_DATABASE: library-service
+      MONGO_INITDB_DATABASE: librarydb
     volumes:
       - mongodb_data:/data/db
       - ./mongo-init:/docker-entrypoint-initdb.d
@@ -93,22 +93,22 @@ services:
 
   # Keycloak - Authentication Server
   keycloak:
+    build:
+      context: ./keycloak-23.0.0
+      dockerfile: Dockerfile
     image: quay.io/keycloak/keycloak:23.0.0
     container_name: keycloak
-    command: start-dev
     ports:
-      - "8084:8080"  # External : Internal
+      - "8084:8080"
     environment:
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=admin
     healthcheck:
-      test: [ "CMD-SHELL", "exec 3<>/dev/tcp/localhost/8080 && echo -e 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\n\\r\\n' >&3 && timeout 5 cat <&3 | grep -q '200 OK'" ]
-      interval: 15s
+      test: [ "CMD-SHELL", "curl -f http://localhost:8080/auth/realms/master || exit 1" ]
+      interval: 10s
       timeout: 5s
-      retries: 5
-      start_period: 120s
-
-
+      retries: 10
+      start_period: 30s
     networks:
       - microservices-network
 
@@ -126,8 +126,8 @@ services:
       - "8081:8081"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - SPRING_DATA_MONGODB_URI=mongodb://host.docker.internal:27017/library-service
-#      - SPRING_DATA_MONGODB_URI=mongodb://root:rootpassword@mongodb:27017/librarydb
+      # MongoDB connection with authentication against admin database
+      - SPRING_DATA_MONGODB_URI=mongodb://root:rootpassword@mongodb:27017/librarydb?authSource=admin
       - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka
       - SPRING_CLOUD_CONFIG_URI=http://config-server:8889
     depends_on:
@@ -141,6 +141,12 @@ services:
         condition: service_started
     networks:
       - microservices-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8081/actuator/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
 
 
   # User Service - User Management Microservice
@@ -288,8 +294,8 @@ services:
         condition: service_healthy
       library-service:
         condition: service_healthy
-#      user-service:
-#        condition: service_healthy
+      user-service:
+        condition: service_healthy
     networks:
       - microservices-network
     healthcheck:

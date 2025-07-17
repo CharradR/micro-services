@@ -20,42 +20,57 @@ import {AttendanceComponent} from "./components/attendance/attendance.component"
 import {AddGroupComponent} from "./components/add-group/add-group.component";
 import {AddStudentComponent} from "./components/add-student/add-student.component";
 import {AttendanceListComponent} from "./components/attendance-list/attendance-list.component";
+import { KeycloakAuthGuard } from './services/keycloak-auth.guard';
 
 
 const routes: Routes = [
-    // http://localhost:4200/
-    { path: "", component: HomeComponent},
-    // http://localhost:4200/teachers
-    { path: "teachers", component: TeachersComponent},
-    // http://localhost:4200/teachers
-    { path: "courses", component: CoursesComponent},
-    // http://localhost:4200/login
-    { path: "login", component: LoginComponent},
-    // http://localhost:4200/signup
-    { path: "signup", component: SignupComponent},
-    // http://localhost:4200/addCourse
-    { path: "addCourse", component: AddCourseComponent},
-    // http://localhost:4200/addTeacher
-    { path: "addTeacher", component: AddTeacherComponent},
-    // http://localhost:4200/courses/courseInfo
-    { path: "courses/courseInfo", component: CourseInfoComponent},
-    // http://localhost:4200/teacher
-    { path: "teacher", component: TeacherComponent},
-    // http://localhost:4200//teacherInfo
-    { path: "teacherInfo", component: TeacherInfoComponent},
-    { path: "books", component: BooksComponent},
-    { path: "loans", component: LoansComponent},
-    { path: "books/manage", component: ManageBooksComponent},
-    { path: 'books/:id', component: BookDetailsComponent},
+  {
+    path: 'admin-dashboard',
+    loadComponent: () => import('./components/admin-dashboard/admin-dashboard.component').then(m => m.AdminDashboardComponent),
+    canActivate: [KeycloakAuthGuard],
+    data: { roles: ['ROLE_ADMIN'] }
+  },
+  {
+    path: 'student-dashboard',
+    loadComponent: () => import('./components/student-dashboard/student-dashboard.component').then(m => m.StudentDashboardComponent),
+    canActivate: [KeycloakAuthGuard],
+    data: { roles: ['ROLE_STUDENT'] }
+  },
+  // { path: 'unauthorized', component: UnauthorizedComponent },
+
+  // http://localhost:4200/
+  { path: "", component: HomeComponent },
+  { path: "home", component: HomeComponent },
+  // http://localhost:4200/teachers
+  { path: "teachers", component: TeachersComponent },
+  // http://localhost:4200/teachers
+  { path: "courses", component: CoursesComponent },
+  // http://localhost:4200/login
+  { path: "login", component: LoginComponent },
+  // http://localhost:4200/signup
+  { path: "signup", component: SignupComponent },
+  // http://localhost:4200/addCourse
+  { path: "addCourse", component: AddCourseComponent },
+  // http://localhost:4200/addTeacher
+  { path: "addTeacher", component: AddTeacherComponent },
+  // http://localhost:4200/courses/courseInfo
+  { path: "courses/courseInfo", component: CourseInfoComponent },
+  // http://localhost:4200/teacher
+  { path: "teacher", component: TeacherComponent },
+  // http://localhost:4200//teacherInfo
+  { path: "teacherInfo", component: TeacherInfoComponent },
+  { path: "books", component: BooksComponent },
+  { path: "loans", component: LoansComponent },
+  { path: "books/manage", component: ManageBooksComponent },
+  { path: 'books/:id', component: BookDetailsComponent },
   {path:'classes',component:ClassesComponent},
   {path:'students/:id',component:StudentsComponent},
   {path:'attendance',component:AttendanceComponent},
   {path:'create/group',component:AddGroupComponent},
   {path:'create/student/:classId',component:AddStudentComponent},
-  {path:'attendance-list/:id',component:AttendanceListComponent}
-
-
-
+  {path:'attendance-list/:id',component:AttendanceListComponent},
+  // Wildcard route - must be last
+  { path: '**', redirectTo: '/home' }
 
 ];
 
@@ -64,4 +79,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 
-export class AppRoutingModule {}
+export class AppRoutingModule { }

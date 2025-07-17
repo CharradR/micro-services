@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@CrossOrigin(origins = "http://localhost:4200")
+
 @RestController
 @RequestMapping("/api/books")
 public class BookController {
@@ -17,6 +17,7 @@ public class BookController {
     public List<Book> getAllBooks() {
         return bookRepository.findAll();
     }
+
     @GetMapping("/{id}")
     public Book getBookById(@PathVariable String id) {
         return bookRepository.findById(id)
@@ -50,6 +51,5 @@ public class BookController {
     public void deleteBook(@PathVariable String id) {
         bookRepository.deleteById(id);
     }
-
 
 }

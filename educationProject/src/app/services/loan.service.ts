@@ -17,7 +17,7 @@ export interface Loan {
 })
 
 export class LoanService {
-  private apiUrl = 'http://localhost:8081/api/loans';
+  private apiUrl = 'http://localhost:8083/api/loans';
 
   constructor(private http: HttpClient) { }
   getLoans(): Observable<Loan[]> {
@@ -27,5 +27,16 @@ export class LoanService {
     const body = { bookId, email };
     return this.http.post(this.apiUrl, body);
   }
+  returnBook(loanId: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${loanId}/return`, null);
+  }
+  sendAvertissement(loanId: string) {
+    return this.http.post(`${this.apiUrl}/${loanId}/send-avertissement`, {});
+  }
+
+  deleteLoan(id: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
+  }
+
 
 }

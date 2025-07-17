@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -26,9 +27,64 @@ import { AttendanceListComponent } from './components/attendance-list/attendance
 //import { AttendanceComponent } from './components/attendance/attendance.component';
 //import { StudentsComponent } from './components/students/students.component';
 //import { ClassesComponent } from './classes/classes.component';
+import { StudentDashboardComponent } from './components/student-dashboard/student-dashboard.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { KeycloakHttpInterceptor } from './services/keycloak.interceptor';
+import { APP_INITIALIZER } from '@angular/core';
+import { AppInitializerService } from './services/app-initializer.service';
+import { DualAuthService } from './services/dual-auth-service';
+import { KeycloakService } from './services/keycloak.service';
+import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 
+export function initializeKeycloak(keycloak: KeycloakService) {
+  return () => keycloak.init();
+}
+
+export function initializeDualAuth(
+  dualAuthService: DualAuthService,
+  keycloakService: KeycloakService
+) {
+  return () => {
+    console.log('🚀 Starting application initialization...');
+
+    return keycloakService.init().then((authenticated) => {
+      console.log('🔐 Keycloak initialization complete. Authenticated:', authenticated);
+
+      if (authenticated) {
+        console.log('🔐 Keycloak authenticated, starting dual auth sync...');
+
+        // Start personal auth sync after Keycloak success
+        // Using setTimeout to prevent blocking app initialization
+        setTimeout(() => {
+          dualAuthService.syncWithPersonalAuth().subscribe({
+            next: (result) => {
+              if (result?.success) {
+                console.log('✅ Dual auth sync completed successfully');
+              } else if (result) {
+                console.log('⚠️ Dual auth sync completed with issues, but continuing...');
+              } else {
+                console.log('ℹ️ Dual auth sync skipped (no sync needed)');
+              }
+            },
+            error: (error) => {
+              console.warn('⚠️ Dual auth sync failed, continuing with Keycloak only:', error);
+            },
+          });
+        }, 500); // Small delay to ensure app is fully initialized
+      } else {
+        console.log('🔓 User not authenticated - login required');
+      }
+
+      return authenticated;
+    }).catch((error) => {
+      console.error('❌ Keycloak initialization failed:', error);
+      return false; // Continue app initialization even if Keycloak fails
+    });
+  };
+}
 @NgModule({
   declarations: [
+
     AppComponent,
     AddCourseComponent,
     AddTeacherComponent,
@@ -52,16 +108,34 @@ import { AttendanceListComponent } from './components/attendance-list/attendance
    // AttendanceComponent,
     //StudentsComponent,
    // ClassesComponent
+    StudentDashboardComponent,
+    // AdminDashboardComponent
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     HttpClientModule,
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
 
+
   ],
-  providers: [],
+  providers: [
+    DatePipe,
+    CurrencyPipe,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeDualAuth,
+      multi: true,
+      deps: [DualAuthService, KeycloakService],
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: KeycloakHttpInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

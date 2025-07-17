@@ -22,10 +22,8 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute
   ) { }
-
   ngOnInit() {
-    // Initialize Keycloak service first
-    this.keycloakService.init();
+    // Don't initialize Keycloak here - it's handled by APP_INITIALIZER
 
     this.loginForm = this.formBuilder.group({
       username: ["", [Validators.required, Validators.minLength(3)]],
@@ -33,11 +31,18 @@ export class LoginComponent implements OnInit {
     });
 
     // Check if already authenticated
-    this.keycloakService.userProfile$.subscribe(profile => {
-      this.userProfile = profile;
-      if (profile) {
-        // Already logged in, redirect to home or return URL
-        this.router.navigate([this.returnUrl]);
+    if (this.keycloakService.isAuthenticated()) {
+      this.userProfile = this.keycloakService.getUserProfile();
+      console.log('User already authenticated:', this.userProfile);
+    }
+
+    // Subscribe to authentication state changes
+    this.keycloakService.isAuthenticated$.subscribe((isAuthenticated: boolean) => {
+      if (isAuthenticated) {
+        this.userProfile = this.keycloakService.getUserProfile();
+        console.log('User authenticated:', this.userProfile);
+      } else {
+        this.userProfile = null;
       }
     });
   }
