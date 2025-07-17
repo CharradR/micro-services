@@ -1,0 +1,66 @@
+
+<div class="attendance-container">
+  <div class="top-container">
+    <p class="date_to_day">Date : <span>{{date}}</span></p>
+    <h5>Attendance Card for group id : {{group}}</h5>
+
+
+
+    <select (change)="onGroupSelection($event)" class="form-select group-selection">
+      <option value="null">No group selected</option>
+      <option class="class-option" *ngFor="let group of listOfClasses" [value]="group.id">{{ group.name }}</option>
+    </select>
+
+  </div>
+  <table class="table table-striped">
+    <thead class="table-dark">
+    <tr class="bg-gray-800">
+      <th scope="col">#</th>
+      <th scope="col">First</th>
+      <th scope="col">Last</th>
+      <th scope="col">S1</th>
+      <th scope="col">S2</th>
+      <th scope="col">S3</th>
+      <th scope="col">S4</th>
+
+    </tr>
+    </thead>
+    <tbody>
+
+
+    <tr  *ngFor="let student of listOfStudents; let i = index;">
+      <th scope="row">{{student.id}}</th>
+      <td >{{student.firstName}} </td>
+      <td>{{student.lastName}}</td>
+      <td>  <select class="form-select" aria-label="Default select example" [(ngModel)]="getAttendance(student.id).s1">
+        <option selected>set attendance</option>
+        <option value="true">Present</option>
+        <option value="false">Absent</option>
+      </select></td>
+      <td>  <select class="form-select" aria-label="Default select example" [(ngModel)]="getAttendance(student.id).s2">
+        <option selected>set attendance</option>
+        <option value="true">Present</option>
+        <option value="false">Absent</option>
+      </select></td>
+      <td>  <select class="form-select" aria-label="Default select example" [(ngModel)]="getAttendance(student.id).s3">
+        <option selected>set attendance</option>
+        <option value="true">Present</option>
+        <option value="false">Absent</option>
+      </select></td>
+      <td>  <select class="form-select" aria-label="Default select example" [(ngModel)]="getAttendance(student.id).s4">
+        <option selected>set attendance</option>
+        <option value="true">Present</option>
+        <option value="false">Absent</option>
+      </select></td>
+    </tr>
+    </tbody>
+  </table>
+
+  <button class="btn btn-success" (click)="save()">Save</button>
+
+</div>
+
+
+
+
+

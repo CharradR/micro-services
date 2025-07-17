@@ -1,0 +1,55 @@
+
+.date_to_day{
+  color: #c21010;
+  font-size: 17px;
+  margin: 5px;
+  font-weight: 400;
+
+}
+.attendance-container{
+}
+.top-container{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #e0e1dd;
+  box-shadow: 1px 1px 1px 1px rgba(128, 128, 128, 0.2);
+  margin:10px;
+}
+.group-selection{
+
+  margin: 10px;
+  padding: 3px;
+  width: 300px;
+}
+button{
+  position: absolute;
+  right: 1%;
+}
+
+
+.class-option{
+  margin: 5px;
+}
+.class-option :hover{
+  background-color: grey;
+}
+li > a{
+  padding: 5px;
+  color: red;
+  text-align: center;
+  margin: 0;
+}
+table{
+  text-align: center;
+  font-weight: 400;
+}
+.col{
+  font-weight: 300;
+}
+thead >tr > th{
+  background-color: rgba(40, 40, 40, 0.8);
+  color: white;
+  padding: 5px;
+  font-weight: 500;
+}

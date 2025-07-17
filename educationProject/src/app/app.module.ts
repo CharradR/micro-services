@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http'; 
+import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AddCourseComponent } from './components/add-course/add-course.component';
@@ -20,6 +20,12 @@ import { TeacherInfoComponent } from './components/teacher-info/teacher-info.com
 import { TeachersComponent } from './components/teachers/teachers.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoansComponent } from './components/loans/loans.component';
+import { AddGroupComponent } from './components/add-group/add-group.component';
+import { AddStudentComponent } from './components/add-student/add-student.component';
+import { AttendanceListComponent } from './components/attendance-list/attendance-list.component';
+//import { AttendanceComponent } from './components/attendance/attendance.component';
+//import { StudentsComponent } from './components/students/students.component';
+//import { ClassesComponent } from './classes/classes.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +45,13 @@ import { LoansComponent } from './components/loans/loans.component';
     TeacherComponent,
     TeacherInfoComponent,
     TeachersComponent,
-    LoansComponent
+    LoansComponent,
+    AddGroupComponent,
+    AddStudentComponent,
+    AttendanceListComponent,
+   // AttendanceComponent,
+    //StudentsComponent,
+   // ClassesComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +59,7 @@ import { LoansComponent } from './components/loans/loans.component';
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-   
+
   ],
   providers: [],
   bootstrap: [AppComponent]

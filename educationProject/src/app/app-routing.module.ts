@@ -14,8 +14,14 @@ import { BooksComponent } from './components/books/books.component';
 import { ManageBooksComponent } from './components/manage-books/manage-books.component';
 import { BookDetailsComponent } from './components/book-details/book-details.component';
 import { LoansComponent } from './components/loans/loans.component';
+import {ClassesComponent} from "./classes/classes.component";
+import {StudentsComponent} from "./components/students/students.component";
+import {AttendanceComponent} from "./components/attendance/attendance.component";
+import {AddGroupComponent} from "./components/add-group/add-group.component";
+import {AddStudentComponent} from "./components/add-student/add-student.component";
+import {AttendanceListComponent} from "./components/attendance-list/attendance-list.component";
 
-  
+
 const routes: Routes = [
     // http://localhost:4200/
     { path: "", component: HomeComponent},
@@ -40,7 +46,14 @@ const routes: Routes = [
     { path: "books", component: BooksComponent},
     { path: "loans", component: LoansComponent},
     { path: "books/manage", component: ManageBooksComponent},
-    { path: 'books/:id', component: BookDetailsComponent}
+    { path: 'books/:id', component: BookDetailsComponent},
+  {path:'classes',component:ClassesComponent},
+  {path:'students/:id',component:StudentsComponent},
+  {path:'attendance',component:AttendanceComponent},
+  {path:'create/group',component:AddGroupComponent},
+  {path:'create/student/:classId',component:AddStudentComponent},
+  {path:'attendance-list/:id',component:AttendanceListComponent}
+
 
 
 

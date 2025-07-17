@@ -1,0 +1,20 @@
+<div class="form-container-user">
+
+
+  <form [formGroup]="classeForm" >
+    <h1>Group form</h1>
+
+
+    <div class="mb-3">
+      <input type="text" class="form-control" placeholder="Group name" formControlName="name">
+    </div>
+
+
+
+    <div class="buttons">
+      <button class="btn btn-primary add" type="submit" (click)="saveGroup()">Add</button>
+      <button class="btn btn-primary cancel" type="submit" (click)="cancel()">Cancel</button>
+    </div>
+
+  </form>
+</div>

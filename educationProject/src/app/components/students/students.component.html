@@ -1,0 +1,38 @@
+<div class="students-container">
+
+
+  <div class="top-container">
+    <h3>List of students belonging to the group {{classId}}</h3>
+    <button class="btn btn-primary" [routerLink]="['/create/student',classId]">Add student</button>
+  </div>
+
+  <table class="table table-striped ">
+    <thead>
+    <tr class="bg-gray-800">
+      <th scope="col">code</th>
+      <th scope="col">First name</th>
+      <th scope="col">Last name</th>
+      <th scope="col">absence rate</th>
+      <th scope="col">Action</th>
+
+
+    </tr>
+    </thead>
+    <tbody>
+
+    <tr *ngFor="let student of listOfStudents">
+      <th scope="row">{{student.id}}</th>
+      <td >{{student.firstName}}</td>
+      <td >{{student.lastName}}</td>
+      <td> rate</td>
+      <td>
+      <button class="btn btn-danger btn-attendance" (click)="removeStudent(student.id)">Remove</button>
+
+      </td>
+
+    </tr>
+
+    </tbody>
+  </table>
+</div>
+
