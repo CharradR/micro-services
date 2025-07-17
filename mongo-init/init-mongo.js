@@ -65,23 +65,23 @@ db.books.insertMany([
     _class:  "com.library.library.book.Book"
   },
   {
-      _id : ObjectId("685bdb337509c0d090db76c7"),
-      title: "Math Magic",
-      quantity: 0,
-      author: "Antoine de Saint-Exupéry",
-      category: "Children",
-      available: false,
-      _class:  "com.library.library.book.Book"
-    },
-    {
-          _id : ObjectId("685bdb417509c0d090db76c8"),
-          title: "Care Your Trees",
-          quantity: 2,
-          author: "Antoine de Saint-Exupéry",
-          category: "Children",
-          available: true,
-          _class:  "com.library.library.book.Book"
-        }
+    _id : ObjectId("685bdb337509c0d090db76c7"),
+    title: "Math Magic",
+    quantity: 0,
+    author: "Antoine de Saint-Exupéry",
+    category: "Children",
+    available: false,
+    _class:  "com.library.library.book.Book"
+  },
+  {
+    _id : ObjectId("685bdb417509c0d090db76c8"),
+    title: "Care Your Trees",
+    quantity: 2,
+    author: "Antoine de Saint-Exupéry",
+    category: "Children",
+    available: true,
+    _class:  "com.library.library.book.Book"
+  }
 ])
 
 
