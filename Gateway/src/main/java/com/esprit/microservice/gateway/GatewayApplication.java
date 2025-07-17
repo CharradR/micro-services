@@ -31,7 +31,8 @@ public class GatewayApplication {
 
                                 // Library Service routes
                                 .route("library-service", r -> r.path("/api/books/**", "/api/loans/**")
-                                                .uri("lb://library")) // Routes books and loans to library service
+                                                .uri("lb://library-service")) // Routes books and loans to
+                                                                              // library-service
 
                                 .build();
         }

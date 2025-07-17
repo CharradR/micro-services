@@ -11,7 +11,7 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: rootpassword
-      MONGO_INITDB_DATABASE: library-service
+      MONGO_INITDB_DATABASE: librarydb
     volumes:
       - mongodb_data:/data/db
       - ./mongo-init:/docker-entrypoint-initdb.d
@@ -126,8 +126,8 @@ services:
       - "8081:8081"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - SPRING_DATA_MONGODB_URI=mongodb://host.docker.internal:27017/library-service
-#      - SPRING_DATA_MONGODB_URI=mongodb://root:rootpassword@mongodb:27017/librarydb
+      # MongoDB connection with authentication against admin database
+      - SPRING_DATA_MONGODB_URI=mongodb://root:rootpassword@mongodb:27017/librarydb?authSource=admin
       - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka
       - SPRING_CLOUD_CONFIG_URI=http://config-server:8889
     depends_on:
@@ -141,6 +141,12 @@ services:
         condition: service_started
     networks:
       - microservices-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8081/actuator/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
 
 
   # User Service - User Management Microservice
@@ -203,8 +209,8 @@ services:
         condition: service_healthy
       library-service:
         condition: service_healthy
-#      user-service:
-#        condition: service_healthy
+      user-service:
+        condition: service_healthy
     networks:
       - microservices-network
     healthcheck:
