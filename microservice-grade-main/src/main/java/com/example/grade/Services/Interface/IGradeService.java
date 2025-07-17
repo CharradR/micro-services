@@ -8,4 +8,6 @@ public interface IGradeService {
     Note ajouterNote(Note note);
     List<Note> getNotesByEtudiant(Long etudiantId);
     double calculerMoyenne(Long etudiantId);
+    List<Note> getAllNotes(); // ➕ nouvelle méthode
+
 }

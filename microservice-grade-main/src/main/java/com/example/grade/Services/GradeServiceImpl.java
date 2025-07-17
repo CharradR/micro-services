@@ -17,6 +17,12 @@ public class GradeServiceImpl implements IGradeService {
         this.noteRepository = noteRepository;
         this.matiereRepository = matiereRepository;
     }
+    @Override
+    public List<Note> getAllNotes() {
+        return noteRepository.findAll();
+    }
+
+
 
     @Override
     public Note ajouterNote(Note note) {
