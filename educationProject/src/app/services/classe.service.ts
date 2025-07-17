@@ -6,14 +6,14 @@ import {HttpClient} from '@angular/common/http';
   providedIn: 'root'
 })
 export class ClasseService {
-
+  private baseUrl = 'http://gateway:8083';
   constructor(private http:HttpClient) { }
 
   findAllClasses(){
-    return this.http.get("http://localhost:8080/group/all")
+    return this.http.get(`${this.baseUrl}/group/all`)
   }
   addGroup(group:any){
-    return this.http.post("http://localhost:8080/group",group)
+    return this.http.post(`${this.baseUrl}/group`,group)
   }
 
 

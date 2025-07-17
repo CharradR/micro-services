@@ -5,20 +5,20 @@ import {HttpClient} from '@angular/common/http';
   providedIn: 'root'
 })
 export class StudentService {
-
+  private baseUrl = 'http://gateway:8083';
   constructor(private http : HttpClient) { }
 
 
   getStudentsBelongingToClass(groupId : number){
-    return this.http.get(`http://localhost:8080/student/all/${groupId}`)
+    return this.http.get(`${this.baseUrl}/student/all/${groupId}`)
   }
 
 
   removeStudent(studentId :number){
-   return  this.http.delete(`http://localhost:8080/student/remove/${studentId}`)
+   return  this.http.delete(`${this.baseUrl}/student/remove/${studentId}`)
   }
   addStudennt(student:any){
-    return this.http.post("http://localhost:8080/student",student)
+    return this.http.post(`${this.baseUrl}/student`,student)
   }
 
 

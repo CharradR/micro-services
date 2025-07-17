@@ -17,7 +17,7 @@ import {AttendaceService} from "../../services/attendance.service";
 export class StudentsComponent {
   classId !:number
   listOfStudents !: any
-  absenceRates: { [studentId: number]: number } = {};
+  absenceRates: { studentId: number; rate:any }[] = [];
 
   constructor(private  activatedRoute : ActivatedRoute,
               private studentService : StudentService,
@@ -25,8 +25,22 @@ export class StudentsComponent {
   }
   ngOnInit(){
     this.classId = this.activatedRoute.snapshot.params['id']
-    this.listOfStudents= this.studentService.getStudentsBelongingToClass(this.classId).subscribe(data =>
-      this.listOfStudents =data)
+    this.listOfStudents= this.studentService.getStudentsBelongingToClass(this.classId).subscribe(data =>{
+      this.listOfStudents =data
+
+    this.listOfStudents.forEach((student:any) => {
+      this.attendaceService.rateAbsenceByStudentId(student.id).subscribe(rate => {
+        this.absenceRates.push({
+          studentId: student.id,
+          rate: rate
+        });
+      });
+    });
+   // console.log(this.absenceRates['1'])
+        console.log(this.absenceRates)
+
+      }
+    )
 /*
     this.listOfStudents.forEach(student => {
       this.attendaceService.rateAbsenceByStudentId(student.id).subscribe(rate => {
@@ -42,5 +56,11 @@ export class StudentsComponent {
       }
     )
   }
+  getRateByStudentId(id: number): string {
+    const rate = this.absenceRates.find(rate => rate.studentId === id)?.rate;
+    return rate !== undefined ? (rate * 100).toFixed(2) + ' %' : 'N/A';
+  }
+
+
 
 }
