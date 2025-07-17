@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs'
-export interface Book {  
-  id?: string; 
+export interface Book {
+  id?: string;
   title: string;
   author: string;
   category: string;
@@ -14,7 +14,7 @@ export interface Book {
 })
 
 export class BookService {
-  private apiUrl = 'http://localhost:8081/api/books';
+  private apiUrl = 'http://localhost:8083/api/books';
 
   constructor(private http: HttpClient) {}
 
