@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+<<<<<<< HEAD
 import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
+=======
+>>>>>>> origin/add-attendance-student-microservices
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,6 +24,7 @@ import { TeacherInfoComponent } from './components/teacher-info/teacher-info.com
 import { TeachersComponent } from './components/teachers/teachers.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoansComponent } from './components/loans/loans.component';
+<<<<<<< HEAD
 import { StudentDashboardComponent } from './components/student-dashboard/student-dashboard.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { KeycloakHttpInterceptor } from './services/keycloak.interceptor';
@@ -29,6 +33,14 @@ import { AppInitializerService } from './services/app-initializer.service';
 import { DualAuthService } from './services/dual-auth-service';
 import { KeycloakService } from './services/keycloak.service';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
+=======
+import { AddGroupComponent } from './components/add-group/add-group.component';
+import { AddStudentComponent } from './components/add-student/add-student.component';
+import { AttendanceListComponent } from './components/attendance-list/attendance-list.component';
+//import { AttendanceComponent } from './components/attendance/attendance.component';
+//import { StudentsComponent } from './components/students/students.component';
+//import { ClassesComponent } from './classes/classes.component';
+>>>>>>> origin/add-attendance-student-microservices
 
 export function initializeKeycloak(keycloak: KeycloakService) {
   return () => keycloak.init();
@@ -96,8 +108,17 @@ export function initializeDualAuth(
     TeacherInfoComponent,
     TeachersComponent,
     LoansComponent,
+<<<<<<< HEAD
     StudentDashboardComponent,
     // AdminDashboardComponent
+=======
+    AddGroupComponent,
+    AddStudentComponent,
+    AttendanceListComponent,
+   // AttendanceComponent,
+    //StudentsComponent,
+   // ClassesComponent
+>>>>>>> origin/add-attendance-student-microservices
   ],
   imports: [
     BrowserModule,
@@ -107,6 +128,7 @@ export function initializeDualAuth(
     ReactiveFormsModule,
     FormsModule,
 
+<<<<<<< HEAD
 
   ],
   providers: [
@@ -123,6 +145,8 @@ export function initializeDualAuth(
       useClass: KeycloakHttpInterceptor,
       multi: true,
     },
+=======
+>>>>>>> origin/add-attendance-student-microservices
   ],
   bootstrap: [AppComponent]
 })
