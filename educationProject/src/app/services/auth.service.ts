@@ -1,148 +1,110 @@
 import { Injectable } from '@angular/core';
-import { OAuthService } from 'angular-oauth2-oidc';
-import { authConfig } from './auth.config';
 import { Router } from '@angular/router';
+import { KeycloakService, UserProfile } from './keycloak.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  // constructor(private oauthService: OAuthService) {
-  //   this.configure();
-  // }
-  constructor(private oauthService: OAuthService, private router: Router) {
-    this.configure();
+
+  constructor(
+    private keycloakService: KeycloakService,
+    private router: Router
+  ) {
+    this.initialize();
   }
 
-  // private configure() {
-  //   this.oauthService.configure(authConfig);
-  //   this.oauthService.loadDiscoveryDocumentAndTryLogin();
-  // }
-
-  private configure() {
-    this.oauthService.configure(authConfig);
-
-    this.oauthService.loadDiscoveryDocumentAndTryLogin().then(() => {
-      if (this.oauthService.hasValidAccessToken()) {
-        const claims: any = this.oauthService.getIdentityClaims();
-        console.log('User claims:', claims);
-        console.log('realm_access:', claims?.realm_access);
-        console.log('resource_access:', claims?.resource_access);
-
-        // Wait a bit for the token to be fully processed
+  private initialize(): void {
+    // Don't initialize Keycloak here - it's handled by APP_INITIALIZER
+    // Just subscribe to authentication state changes
+    this.keycloakService.isAuthenticated$.subscribe((isAuthenticated: boolean) => {
+      if (isAuthenticated) {
+        console.log('User authenticated, checking roles for redirection...');
+        // Small delay to ensure user profile is loaded
         setTimeout(() => {
           this.redirectAfterLogin();
         }, 100);
-      } else {
-        console.log('No valid access token found');
       }
-    }).catch(error => {
-      console.error('Error during OAuth configuration:', error);
     });
   }
 
 
   private redirectAfterLogin() {
+    console.log('All roles:', this.allRoles);
+    console.log('Client roles:', this.clientRoles);
+    console.log('Keycloak roles:', this.keycloakService.getUserRoles());
+
     if (this.hasRole('ROLE_ADMIN')) {
+      console.log('Redirecting to admin dashboard');
       this.router.navigate(['/admin-dashboard']);
     } else if (this.hasRole('ROLE_STUDENT')) {
+      console.log('Redirecting to student dashboard');
       this.router.navigate(['/student-dashboard']);
     } else {
+      console.log('Redirecting to home');
       this.router.navigate(['/home']);
     }
   }
   get clientRoles(): string[] {
-    const token = this.oauthService.getAccessToken();
-    if (!token) return [];
-
-  try {
-    const tokenPayload = JSON.parse(atob(token.split('.')[1]));
-    const clientId = this.oauthService.clientId || 'frontend-client';
-    const roles = tokenPayload.resource_access?.[clientId]?.roles || [];
-    console.log('Client roles for', clientId, ':', roles);
-    return roles;
-  } catch (e) {
-    console.error('Error decoding token:', e);
-    return [];
-  }
-}
-
-
-//   get allRoles(): string[] {
-//   const claims: any = this.oauthService.getIdentityClaims();
-//   if (!claims) {
-//     return [];
-//   }
-//   const realmRoles = claims.realm_access?.roles || [];
-//   const clientRoles = claims.resource_access?.['frontend-client']?.roles || [];
-//   return [...realmRoles, ...clientRoles];
-// }
-get allRoles(): string[] {
-  const token = this.oauthService.getAccessToken();
-  if (!token) {
-    console.log('No access token found');
-    return [];
+    return this.keycloakService.getUserRoles();
   }
 
-  try {
-    const tokenParts = token.split('.');
-    if (tokenParts.length !== 3) {
-      console.log('Invalid token format');
-      return [];
-    }
-
-    const payload = JSON.parse(atob(tokenParts[1]));
-
-    const realmRoles = payload.realm_access?.roles || [];
-
-    const clientId = this.oauthService.clientId || 'frontend-client';
-    const clientRoles = payload.resource_access?.[clientId]?.roles || [];
-
-    const allRoles = [...realmRoles, ...clientRoles];
-    return allRoles;
-  } catch (error) {
-    console.error('Error parsing token for roles:', error);
-    return [];
+  get allRoles(): string[] {
+    return this.keycloakService.getUserRoles();
   }
-}
-
 
   login() {
-    this.oauthService.initCodeFlow();
+    this.keycloakService.login();
   }
+
   get userName(): string | null {
-    const claims: any = this.oauthService.getIdentityClaims();
-    return claims ? claims['preferred_username'] : null;
+    const profile = this.keycloakService.getUserProfile();
+    return profile ? (profile.preferred_username || null) : null;
   }
 
-
-  logout() {
-    this.oauthService.logOut();
+  logout(): void {
+    this.keycloakService.logout().subscribe({
+      next: () => {
+        console.log('Logout successful');
+        this.router.navigate(['/home']);
+      },
+      error: (error: any) => {
+        console.error('Logout error:', error);
+        this.router.navigate(['/home']);
+      }
+    });
   }
 
   get isLoggedIn(): boolean {
-    return this.oauthService.hasValidAccessToken();
+    return this.keycloakService.isAuthenticated();
   }
 
   get accessToken(): string {
-    return this.oauthService.getAccessToken();
+    return this.keycloakService.getToken() || '';
   }
 
   get roles(): string[] {
-    const claims: any = this.oauthService.getIdentityClaims();
-    if (!claims || !claims.resource_access || !claims.resource_access['frontend-client']) {
-      return [];
-    }
-
-    return claims.resource_access['frontend-client'].roles || [];
+    return this.keycloakService.getUserRoles();
   }
 
-
-
   hasRole(role: string): boolean {
-    const userRoles = this.allRoles;
+    const userRoles = this.keycloakService.getUserRoles();
     console.log('Checking role:', role, 'against user roles:', userRoles);
     return userRoles.includes(role);
   }
 
+  // Additional convenience methods
+  getUserProfile(): UserProfile | null {
+    return this.keycloakService.getUserProfile();
+  }
+
+  refreshToken(): Observable<boolean> {
+    return this.keycloakService.refreshToken();
+  }
+
+  isTokenExpired(): boolean {
+    const token = this.keycloakService.getToken();
+    return token ? this.keycloakService.isTokenExpired(token) : true;
+  }
 }

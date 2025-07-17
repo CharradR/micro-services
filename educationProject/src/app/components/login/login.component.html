@@ -86,7 +86,7 @@
             <div class="user-details">
               <p><strong>Email:</strong> {{ userProfile.email }}</p>
               <p><strong>Username:</strong> {{ userProfile.preferred_username }}</p>
-              <p><strong>Roles:</strong> {{ userProfile.roles.join(', ') }}</p>
+              <p><strong>Roles:</strong> {{ userProfile.roles?.join(', ') }}</p>
               <p><strong>Email Verified:</strong> {{ userProfile.email_verified ? 'Yes' : 'No' }}</p>
             </div>
             <div>

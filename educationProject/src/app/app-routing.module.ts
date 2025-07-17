@@ -14,15 +14,24 @@ import { BooksComponent } from './components/books/books.component';
 import { ManageBooksComponent } from './components/manage-books/manage-books.component';
 import { BookDetailsComponent } from './components/book-details/book-details.component';
 import { LoansComponent } from './components/loans/loans.component';
-import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
-import { StudentDashboardComponent } from './components/student-dashboard/student-dashboard.component';
+import { KeycloakAuthGuard } from './services/keycloak-auth.guard';
 
 
 const routes: Routes = [
-  // { path: 'admin-dashboard', component: AdminDashboardComponent },
-  // { path: 'student-dashboard', component: StudentDashboardComponent },
+  {
+    path: 'admin-dashboard',
+    loadComponent: () => import('./components/admin-dashboard/admin-dashboard.component').then(m => m.AdminDashboardComponent),
+    canActivate: [KeycloakAuthGuard],
+    data: { roles: ['ROLE_ADMIN'] }
+  },
+  {
+    path: 'student-dashboard',
+    loadComponent: () => import('./components/student-dashboard/student-dashboard.component').then(m => m.StudentDashboardComponent),
+    canActivate: [KeycloakAuthGuard],
+    data: { roles: ['ROLE_STUDENT'] }
+  },
   // { path: 'unauthorized', component: UnauthorizedComponent },
- 
+
   // http://localhost:4200/
   { path: "", component: HomeComponent },
   { path: "home", component: HomeComponent },
@@ -47,9 +56,10 @@ const routes: Routes = [
   { path: "books", component: BooksComponent },
   { path: "loans", component: LoansComponent },
   { path: "books/manage", component: ManageBooksComponent },
-  { path: 'books/:id', component: BookDetailsComponent }
+  { path: 'books/:id', component: BookDetailsComponent },
 
-
+  // Wildcard route - must be last
+  { path: '**', redirectTo: '/home' }
 
 ];
 

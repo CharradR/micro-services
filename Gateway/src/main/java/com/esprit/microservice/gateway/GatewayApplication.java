@@ -24,8 +24,14 @@ public class GatewayApplication {
                                 // Auth test route for JWT validation testing
                                 .route("auth-test", r -> r.path("/auth-test")
                                                 .uri("forward:/auth-test"))
+
+                                // User Service routes
                                 .route("user-service", r -> r.path("/api/users/**", "/api/auth/**")
-                                                .uri("lb://user-service")) // Routes both users and auth to user-service
+                                                .uri("lb://user-service")) // Routes both users and auth to USER-SERVICE
+
+                                // Library Service routes
+                                .route("library-service", r -> r.path("/api/books/**", "/api/loans/**")
+                                                .uri("lb://library")) // Routes books and loans to library service
 
                                 .build();
         }
