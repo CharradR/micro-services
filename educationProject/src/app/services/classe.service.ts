@@ -6,7 +6,7 @@ import {HttpClient} from '@angular/common/http';
   providedIn: 'root'
 })
 export class ClasseService {
-  private baseUrl = 'http://gateway:8083';
+  private baseUrl = 'http://localhost:8083/microservice-students';
   constructor(private http:HttpClient) { }
 
   findAllClasses(){

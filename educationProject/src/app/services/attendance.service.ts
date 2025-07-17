@@ -6,7 +6,7 @@ import {Observable} from "rxjs";
   providedIn: 'root'
 })
 export class AttendaceService {
-  private baseUrl = 'http://gateway:8083';
+  private baseUrl = 'http://localhost:8083/attendance';
   constructor(private http : HttpClient) { }
 
 
