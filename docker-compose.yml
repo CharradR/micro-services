@@ -111,8 +111,50 @@ services:
       start_period: 30s
     networks:
       - microservices-network
+  mysqlGrade:
+    image: mysql:8.0
+    container_name: mysqlGrade
+    restart: unless-stopped
+    ports:
+      - "3308:3308"
+    environment:
+      MYSQL_ROOT_PASSWORD: ""  # mot de passe vide
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"  # obligatoire pour mot de passe vide
+      MYSQL_DATABASE: gestion_grade
+    volumes:
+      - mysql_grade_data:/var/lib/mysql
+    networks:
+      - microservices-network
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
-
+  grade-service:
+    build:
+      context: ./microservice-grade-main
+      dockerfile: Dockerfile
+    container_name: grade-service
+    restart: unless-stopped
+    ports:
+      - "8089:8082"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysqlGrade:3306/gestion_grade?createDatabaseIfNotExist=true&useSSL=false
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka
+      - SPRING_CLOUD_CONFIG_URI=http://config-server:8889
+    depends_on:
+      mysqlGrade:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+    networks:
+      - microservices-network
 
 
     # Library Service - Business Microservice
@@ -242,6 +284,8 @@ volumes:
   mysql_data:
     driver: local
   keycloak_data:
+    driver: local
+  mysql_grade_data:
     driver: local
 
 networks:
