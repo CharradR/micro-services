@@ -1,19 +1,30 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { UserService, User } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.css']
 })
 export class AdminDashboardComponent implements OnInit {
   users: User[] = [];
+  filteredUsers: User[] = [];
   loading: boolean = true;
   error: string = '';
+
+  // Search and filter properties
+  searchTerm: string = '';
+  selectedRole: string = '';
+  sortBy: string = 'username';
+  sortDirection: 'asc' | 'desc' = 'asc';
+
+  // Available roles for filtering
+  availableRoles: string[] = [];
 
   // Modal properties
   showModal: boolean = false;
@@ -40,6 +51,9 @@ export class AdminDashboardComponent implements OnInit {
     this.userService.getAllUsers().subscribe({
       next: (users) => {
         this.users = users;
+        this.filteredUsers = [...users];
+        this.extractAvailableRoles();
+        this.applyFilters();
         this.loading = false;
         console.log('Users loaded:', users);
       },
@@ -49,6 +63,94 @@ export class AdminDashboardComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  // Extract unique roles from all users
+  extractAvailableRoles(): void {
+    const roleSet = new Set<string>();
+    this.users.forEach(user => {
+      if (user.roles && user.roles.length > 0) {
+        user.roles.forEach(role => roleSet.add(role.name));
+      }
+    });
+    this.availableRoles = Array.from(roleSet).sort();
+  }
+
+  // Apply search and filter
+  applyFilters(): void {
+    let filtered = [...this.users];
+
+    // Apply search filter
+    if (this.searchTerm.trim()) {
+      const searchLower = this.searchTerm.toLowerCase();
+      filtered = filtered.filter(user => 
+        user.username.toLowerCase().includes(searchLower) ||
+        user.email.toLowerCase().includes(searchLower) ||
+        this.getUserRoles(user).toLowerCase().includes(searchLower)
+      );
+    }
+
+    // Apply role filter
+    if (this.selectedRole) {
+      filtered = filtered.filter(user => 
+        user.roles && user.roles.some(role => role.name === this.selectedRole)
+      );
+    }
+
+    // Apply sorting
+    filtered.sort((a, b) => {
+      let valueA: any, valueB: any;
+      
+      switch (this.sortBy) {
+        case 'username':
+          valueA = a.username;
+          valueB = b.username;
+          break;
+        case 'email':
+          valueA = a.email;
+          valueB = b.email;
+          break;
+        case 'id':
+          valueA = a.id;
+          valueB = b.id;
+          break;
+        default:
+          valueA = a.username;
+          valueB = b.username;
+      }
+
+      if (valueA < valueB) return this.sortDirection === 'asc' ? -1 : 1;
+      if (valueA > valueB) return this.sortDirection === 'asc' ? 1 : -1;
+      return 0;
+    });
+
+    this.filteredUsers = filtered;
+  }
+
+  // Search methods
+  onSearchChange(): void {
+    this.applyFilters();
+  }
+
+  onRoleFilterChange(): void {
+    this.applyFilters();
+  }
+
+  onSortChange(): void {
+    this.applyFilters();
+  }
+
+  toggleSortDirection(): void {
+    this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    this.applyFilters();
+  }
+
+  clearFilters(): void {
+    this.searchTerm = '';
+    this.selectedRole = '';
+    this.sortBy = 'username';
+    this.sortDirection = 'asc';
+    this.applyFilters();
   }
 
   getUserRoles(user: User): string {
