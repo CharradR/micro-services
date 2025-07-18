@@ -1,0 +1,76 @@
+.form-container-user{
+  margin: 20px;
+  display: flex;
+  justify-content: center; /* Centrage horizontal */
+  align-items: center;
+}
+
+
+form{
+  width: 90%;
+  box-shadow: 0 0 2px 1px rgb(224, 225, 221);
+  height:100% !important;
+  border-radius: 10px;
+  padding: 80px;
+  position: relative;
+  margin: 10px;
+}
+h1{
+  margin: 10px;
+  color: rgba(15, 59, 86, 0.8);
+  font-size: 30px;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: 300;
+
+}
+.form-control{
+  color : #090eaf;
+  margin:10px;
+}
+label{
+  margin:10px;
+  color:#457b9d;
+  font-size:15px;
+  font-family: "Nunito",sans-serif;
+
+}
+input::placeholder{
+  color: rgba(0, 0, 0, 0.45);
+}
+input{
+  /*border: none;*/
+  border-radius: 0;
+  /* border-bottom: 1px solid rgba(18, 40, 20, 0.8);*/
+  margin: 10px;
+}
+.buttons{
+  position: absolute;
+  right: 1%;
+  bottom:1%;
+  font-family: "Nunito",sans-serif;
+  width: auto;
+
+}
+
+.btn{
+  margin: 5px;
+
+  width: 80px;
+  padding: 4px;
+
+
+
+}
+.add{
+  border: 2px solid rgb(194, 16, 16);
+
+  background-color: rgb(194, 16, 16);
+}
+.cancel{
+  background-color: transparent;
+  color : rgb(194, 16, 16);
+  border: 2px solid rgb(194, 16, 16);
+
+
+}

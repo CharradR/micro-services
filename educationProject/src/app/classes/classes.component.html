@@ -1,0 +1,30 @@
+<div class="students-container">
+
+  <div class="top-container">
+    <h3>List of groups </h3>
+    <button class="btn btn-primary" [routerLink]="['/create/group']">Add group</button>
+  </div>
+  <table class="table table-striped">
+    <thead>
+    <tr class="bg-gray-800">
+      <th scope="col">code</th>
+      <th scope="col">name</th>
+      <th scope="col">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <tr *ngFor="let group of classes">
+      <th scope="row">{{group.id}}</th>
+      <td >{{group.name}}</td>
+      <td>
+        <button class="btn btn-danger btn-students" [routerLink]="['/students',group.id]">See students</button>
+        <button class="btn btn-danger btn-attendance" [routerLink]="['/attendance-list',group.id]">See attendance</button>
+
+
+      </td>
+    </tr>
+
+    </tbody>
+  </table>
+</div>

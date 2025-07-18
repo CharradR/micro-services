@@ -1,0 +1,25 @@
+/* Sort direction arrow rotation */
+.rotate-180 {
+  transform: rotate(180deg);
+}
+
+/* Smooth transitions */
+svg {
+  transition: transform 0.2s ease-in-out;
+}
+
+/* Custom focus styles for better accessibility */
+.focus-ring:focus {
+  outline: 2px solid #3B82F6;
+  outline-offset: 2px;
+}
+
+/* Search input styling */
+input[type="text"]:focus {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Select styling */
+select:focus {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}

@@ -1,0 +1,159 @@
+<div class="flex flex-col items-center mt-9 w-full">
+  <!-- Top bar with search and add button -->
+  <div class="flex justify-between items-center  w-full max-w-4xl mb-4 px-4">
+    <input [(ngModel)]="searchTitle" 
+      type="text"
+      placeholder="Search books..."
+      class="px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-[250px]"
+    />
+    <button (click)="addBook()"
+      class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 mr-[60px]"
+    >
+      + Add Book
+    </button>
+  </div>
+  <table class="text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+      <tr>
+        <th scope="col" class="px-6 py-3">Title</th>
+        <th scope="col" class="px-6 py-3">Author</th>
+        <th scope="col" class="px-6 py-3">Category</th>
+        <th scope="col" class="px-6 py-3">Availability</th>
+        <th scope="col" class="px-6 py-3">Quantity</th>
+        <th scope="col" class="px-6 py-3"></th>
+        <th scope="col" class="px-6 py-3"></th>
+      </tr>
+    </thead>
+    <tbody>
+    
+      <tr *ngFor="let book of filteredBooks"
+        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+
+
+        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+          {{ book.title }}</th>
+        <td class="px-6 py-4">{{ book.author }}</td>
+        <td class="px-6 py-4">{{ book.category }}</td>
+        <td class="px-6 py-4">{{ book.available }}</td>
+        <td class="px-6 py-4"> {{ book.quantity }}</td>
+
+        <td>
+           <button (click)="editBook(book)"
+              class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+              type="button">
+              edit
+            </button>
+        </td>
+        <td>
+           <button (click)="deleteBook(book)"
+              class="text-white bg-gradient-to-r from-red-500 via-red-600 to-red-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+              type="button">
+              delete
+            </button>
+        </td>
+
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<div class="max-w-xl mx-auto bg-white p-6 rounded shadow-md mt-6" *ngIf="isFormVisible">
+  <h3 class="text-xl font-semibold mb-4 text-center" *ngIf="isEditing">Edit Book</h3>
+  <h3 class="text-xl font-semibold mb-4 text-center" *ngIf="!isEditing">Add Book</h3>
+
+  <form #bookForm="ngForm">
+    <!-- Title -->
+    <div class="mb-4">
+      <label for="title" class="block text-gray-700 font-medium mb-1">Title</label>
+      <input
+        id="edittitle"
+        type="text"
+        name="title"
+        class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        [(ngModel)]="formData.title"
+        required
+        placeholder="Enter title"
+      />
+      <p class="text-red-500 text-sm mt-1" *ngIf="bookForm.submitted && !formData.title">Please input title</p>
+    </div>
+
+    <!-- Author -->
+    <div class="mb-4">
+      <label for="author" class="block text-gray-700 font-medium mb-1">Author</label>
+      <input
+        id="editAuthor"
+        type="text"
+        name="author"
+        class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        [(ngModel)]="formData.author"
+        required
+        placeholder="Enter author"
+      />
+      <p class="text-red-500 text-sm mt-1" *ngIf="bookForm.submitted && !formData.author">Please input author</p>
+    </div>
+
+    <!-- Category -->
+    <div class="mb-4">
+      <label for="category" class="block text-gray-700 font-medium mb-1">Category</label>
+      <input
+        id="editCategory"
+        type="text"
+        name="category"
+        class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        [(ngModel)]="formData.category"
+        required
+        placeholder="Enter category"
+      />
+      <p class="text-red-500 text-sm mt-1" *ngIf="bookForm.submitted && !formData.category">Please input category</p>
+    </div>
+
+    <!-- Available -->
+    <div class="mb-4">
+      <label for="available" class="block text-gray-700 font-medium mb-1">Availability</label>
+      <input
+        id="editAvailable"
+        type="text"
+        name="available"
+        class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        [(ngModel)]="formData.available"
+        required
+        placeholder="Enter availability"
+      />
+      <p class="text-red-500 text-sm mt-1" *ngIf="bookForm.submitted && !formData.available">Please input availability</p>
+    </div>
+
+    <!-- Quantity -->
+    <div class="mb-6">
+      <label for="quantity" class="block text-gray-700 font-medium mb-1">Quantity</label>
+      <input
+        id="editQuantity"
+        type="text"
+        name="quantity"
+        class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        [(ngModel)]="formData.quantity"
+        required
+        placeholder="Enter quantity"
+      />
+      <p class="text-red-500 text-sm mt-1" *ngIf="bookForm.submitted && !formData.quantity">Please input quantity</p>
+    </div>
+
+    <!-- Buttons -->
+    <div class="flex justify-between">
+      <button
+        type="button"
+        (click)="saveBook()"
+        class="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700 transition"
+      >
+        💾 Save
+      </button>
+      <button
+        type="button"
+        (click)="cancelForm()"
+        class="bg-gray-300 text-gray-800 px-5 py-2 rounded hover:bg-gray-400 transition"
+      >
+        ✖ Cancel
+      </button>
+    </div>
+  </form>
+</div>

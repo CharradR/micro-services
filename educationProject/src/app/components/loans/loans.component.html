@@ -1,0 +1,67 @@
+<div class="flex flex-col items-center mt-9 w-full">
+    <div class=" w-full max-w-4xl mb-4 ">
+        <input [(ngModel)]="searchEmail" type="text" placeholder="Search by email ..."
+            class="px-2 py-2 ml-[-160px] border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-[250px]" />
+    </div>
+    <table class="text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">Book Title</th>
+                <th scope="col" class="px-6 py-3"> Quantity</th>
+                <th scope="col" class="px-6 py-3">Email</th>
+                <th scope="col" class="px-6 py-3">LoanDate</th>
+                <th scope="col" class="px-6 py-3">DueDate</th>
+                <th scope="col" class="px-6 py-3">Returned</th>
+                <th scope="col" class="px-6 py-3"></th>
+                <th scope="col" class="px-6 py-3"></th>
+                <th scope="col" class="px-6 py-3"></th>
+
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr *ngFor="let loan of filteredLoans"
+                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    {{ loan.bookDetails?.title || loan.bookId }}</th>
+                <td class="px-6 py-4">{{ loan.bookDetails?.quantity }}</td>
+                <td class="px-6 py-4">{{ loan.userEmail }}</td>
+
+                <td class="px-6 py-4">{{ loan.loanDate }}</td>
+                <td class="px-6 py-4" >{{ loan.dueDate }}
+                </td>
+                <td class="px-6 py-4"> {{ loan.returned }}</td>
+
+                <td>
+                    <button (click)="loan.id && markAsReturned(loan.id)" [disabled]="!loan.id || loan.returned"
+                        class="text-black  bg-gradient-to-r from-green-500 via-green-600 to-green-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+                        type="button">
+                        Returned
+                    </button>
+
+                </td>
+                <td>
+
+                    <button 
+                    (click)="sendAvertissement(loan.id!)"
+                    [disabled]="!isLoanExpired(loan.dueDate)" 
+                    [ngClass]="{
+      'bg-gray-300 text-black cursor-not-allowed': !isLoanExpired(loan.dueDate),
+      'bg-gradient-to-r from-yellow-500 via-yellow-600 to-yellow-700 hover:bg-gradient-to-br text-black': isLoanExpired(loan.dueDate)
+    }" 
+    class="focus:ring-4 focus:outline-none focus:ring-yellow-300 dark:focus:ring-yellow-800 shadow-lg dark:shadow-lg font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+                        type="button">
+                        Send avertissement
+                    </button>
+                </td>
+
+                <td> <button (click)="deleteLoan(loan)"
+                        class="text-black  bg-gradient-to-r from-red-500 via-red-600 to-red-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+                        type="button">
+                        Delete
+                    </button></td>
+
+            </tr>
+        </tbody>
+    </table>
+</div>

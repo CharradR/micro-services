@@ -1,0 +1,106 @@
+<!-- Login -->
+<div class="contact_info_container">
+  <div class="container">
+    <div class="row">
+      <!-- Login Form -->
+      <div class="col-lg-8 mx-auto">
+        <div class="contact_form">
+
+          <!-- Show login options if not authenticated -->
+          <div *ngIf="!userProfile">
+            <div class="contact_info_title">Login to Education Platform</div>
+
+            <!-- Primary Keycloak Login Button -->
+            <div class="keycloak-login-section">
+              <p class="login-description">
+                Click the button below to login securely through our authentication system.
+              </p>
+              <button
+                type="button"
+                class="keycloak-login-button"
+                (click)="login()"
+                [disabled]="isLoading">
+                <span *ngIf="isLoading">Redirecting...</span>
+                <span *ngIf="!isLoading">🔐 Login with Keycloak</span>
+              </button>
+            </div>
+
+            <!-- Error message -->
+            <div *ngIf="errorMessage" class="alert alert-danger">
+              {{ errorMessage }}
+            </div>
+
+            <!-- Optional: Manual login form (hidden by default) -->
+            <div class="manual-login-toggle" *ngIf="false">
+              <hr>
+              <p><small>For testing purposes only:</small></p>
+              <form [formGroup]="loginForm" (ngSubmit)="manualLogin()">
+                <div>
+                  <div class="form_title">Username</div>
+                  <input type="text" class="comment_input" formControlName="username" required="required">
+                </div>
+                <div *ngIf="loginForm.controls['username'].invalid
+								&& (loginForm.controls['username'].touched || loginForm.controls['username'].dirty)">
+                  <div   *ngIf="loginForm.controls['username']?.errors?.['required']" class="red">
+                    Username is required
+                  </div>
+
+                  <div *ngIf="loginForm.controls['username']?.errors?.['minlength']" class="red">
+                    Minimum 3 characters required
+                  </div>
+                </div>
+
+                <div>
+                  <div class="form_title">Password</div>
+                  <input type="password" class="comment_input" formControlName="password" required="required">
+                </div>
+                <div *ngIf="loginForm.controls['password'].invalid
+								&& (loginForm.controls['password'].touched || loginForm.controls['password'].dirty)">
+                  <div  *ngIf="loginForm.controls['password']?.errors?.['required']" class="red">
+                    Password is required
+                  </div>
+                  <div *ngIf="loginForm.controls['password']?.errors?.['minlength']" class="red">
+                    Minimum 6 characters required
+                  </div>
+                  <div class="red" *ngIf="loginForm.controls['password']?.errors?.['minlength']">
+                    Maximum 50 characters allowed
+                  </div>
+                </div>
+
+                <div>
+                  <button
+                    type="submit"
+                    class="comment_button trans_200"
+                    [disabled]="loginForm.invalid || isLoading">
+                    <span *ngIf="isLoading">Logging in...</span>
+                    <span *ngIf="!isLoading">Manual Login</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Show user info if authenticated -->
+          <div *ngIf="userProfile" class="user-info-container">
+            <div class="contact_info_title">Welcome, {{ userProfile.name }}!</div>
+            <div class="user-details">
+              <p><strong>Email:</strong> {{ userProfile.email }}</p>
+              <p><strong>Username:</strong> {{ userProfile.preferred_username }}</p>
+              <p><strong>Roles:</strong> {{ userProfile.roles?.join(', ') }}</p>
+              <p><strong>Email Verified:</strong> {{ userProfile.email_verified ? 'Yes' : 'No' }}</p>
+            </div>
+            <div>
+              <button
+                type="button"
+                class="comment_button trans_200"
+                (click)="logout()"
+                style="background-color: #dc3545;">
+                Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

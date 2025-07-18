@@ -1,0 +1,49 @@
+
+<div class="attendance-container">
+  <div class="top-container">
+  </div>
+  <table class="table table-striped">
+    <thead class="table-dark">
+    <tr class="bg-gray-800">
+      <th scope="col">code</th>
+      <th scope="col">Fist name</th>
+      <th scope="col">Last name</th>
+      <th scope="col">date</th>
+
+      <th scope="col">S1</th>
+      <th scope="col">S2</th>
+      <th scope="col">S3</th>
+      <th scope="col">S4</th>
+
+    </tr>
+    </thead>
+    <tbody>
+
+<tr *ngFor="let attendance of attendanceByGroup">
+  <ng-container *ngIf="getStudentById(attendance.studentId) as student">
+    <th scope="row">{{ student.id }}</th>
+    <td>{{ student.firstName }}</td>
+    <td>{{ student.lastName }}</td>
+    <td>{{ attendance.date }}</td>
+
+    <td>
+      <span style="color:green" *ngIf="attendance.s1 === true">present</span>
+      <span style="color:red" *ngIf="attendance.s1 === false">absent</span>
+    </td>
+    <td>
+      <span style="color:green" *ngIf="attendance.s2 === true">present</span>
+      <span style="color:red" *ngIf="attendance.s2 === false">absent</span>
+    </td>
+    <td>
+      <span style="color:green" *ngIf="attendance.s3 === true">present</span>
+      <span style="color:red" *ngIf="attendance.s3 === false">absent</span>
+    </td>
+    <td>
+      <span style="color:green" *ngIf="attendance.s4 === true">present</span>
+      <span style="color:red" *ngIf="attendance.s4 === false">absent</span>
+    </td>
+  </ng-container>
+</tr>
+    </tbody>
+  </table>
+  </div>
