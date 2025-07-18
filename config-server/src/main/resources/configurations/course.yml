@@ -1,0 +1,70 @@
+eureka:
+
+  instance:
+    hostname: localhost
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+server:
+  port: 8085  #Microservice RH utilise le port 8085
+  ssl:
+    enabled: false
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:8889/COURSE-APPLICATION-TEST?useUnicode=true&useJDBCCompliantTimezoneShift=true&createDatabaseIfNotExist=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    username: root
+    password: root
+    hikari:
+      data-source-properties:
+        serverTimezone: UTC
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: zrelliraoua@gmail.com
+    password: qacg fkha jkhs rxzn
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  jackson:
+    time-zone: UTC
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://authen.uptech.tn/realms/Portal-Staging
+          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+
+jwt:
+  auth:
+    converter:
+      resource-id: uptech-rest-api
+      principle-attribute: preferred_username
+
+keycloak:
+  realm: Portal-Staging
+  domain: https://authen.uptech.tn
+  adminClientId: admin-cli
+  adminClientSecret: FUkBzMSJLYg3xg8RFZkVjm4yKS5clDna
+  client: uptech-rest-api
+  urls:
+    auth: ${keycloak.domain}
+    users: ${keycloak.domain}/admin/realms/${keycloak.realm}/users
+    token: ${keycloak.domain}/realms/${keycloak.realm}/protocol/openid-connect/token
+
+user-details-service:
+  url: http://localhost:8081/
+
+
+
